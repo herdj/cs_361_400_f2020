@@ -1,2 +1,3 @@
-# cs_361_400_f2020
-Group Project
+# The Sharp Crayons
+Crayola just release a new shade: Badass. 
+Color me surprised.
