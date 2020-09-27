@@ -1,3 +1,3 @@
 # The Sharp Crayons
-Crayola just release a new shade: Badass. 
+Crayola just released a new shade: Badass. 
 Color me surprised.
