@@ -4,7 +4,7 @@ Potential Iterations:
 >Messaging Page (Timed/Triggered Refresh) -> Messaging Page (Real-Time Refresh) -> Messaging Page (Upload/Share Media)
 
 Potential Data Model:
->tbl_message: (message_id, from_user_id: int, to_user_id: int, message_content: string, timestamp: datetime, deleted: bool)
+>com.tbl_message: (message_id, from_user_id: int, to_user_id: int, message_content: string, timestamp: datetime, deleted: bool)
 - Primary Key: message_id
 - Table for user-to-user messaging
 - Deleted flag to hide messages from the UI
