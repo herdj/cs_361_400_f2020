@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>TalentWebApi</RootNamespace>
+        <UseAppHost>false</UseAppHost>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TalentWebApi.Abstractions\TalentWebApi.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="DataAccessLayer" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,3 @@
+build:
+  docker:
+    talent-web-api: talent-web-api.dockerfile
