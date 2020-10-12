@@ -27,3 +27,11 @@ MacOS
 
 Client - All client side code.\
 Services - All backend Apis and Database code.
+
+## Authors
+
+[Anjanette Oborn](https://github.com/oborna)
+[Jacob Musselman](https://github.com/#)
+[Joe Mulaney](https://github.com/#)
+[Joel Herd](https://github.com/#)
+[Lawrence Cramer](https://github.com/#)
