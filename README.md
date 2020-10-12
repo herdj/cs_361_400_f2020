@@ -32,6 +32,6 @@ Services - All backend Apis and Database code.
 
 [Anjanette Oborn](https://github.com/oborna)
 [Jacob Musselman](https://github.com/#)
-[Joe Mulaney](https://github.com/#)
+[Joe Mulaney](https://github.com/mullanjo)
 [Joel Herd](https://github.com/#)
 [Lawrence Cramer](https://github.com/#)
