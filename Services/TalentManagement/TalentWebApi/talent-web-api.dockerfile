@@ -12,6 +12,8 @@ RUN apt-get update \
  && apt-get -y install dotnet-sdk-3.1 \
  && apt-get -y install dotnet-runtime-3.1
 
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi
+
 # TimeZone Data
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y
