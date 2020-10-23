@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalentWebApi.Server", "TalentWebApi.Server\TalentWebApi.Server.csproj", "{314092DF-394C-4465-98CD-D62A239BEAB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalentWebApi.Abstractions", "TalentWebApi.Abstractions\TalentWebApi.Abstractions.csproj", "{05336919-4226-4EF4-A13F-B1EFAEC78B1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{314092DF-394C-4465-98CD-D62A239BEAB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{314092DF-394C-4465-98CD-D62A239BEAB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{314092DF-394C-4465-98CD-D62A239BEAB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{314092DF-394C-4465-98CD-D62A239BEAB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05336919-4226-4EF4-A13F-B1EFAEC78B1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05336919-4226-4EF4-A13F-B1EFAEC78B1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05336919-4226-4EF4-A13F-B1EFAEC78B1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05336919-4226-4EF4-A13F-B1EFAEC78B1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
