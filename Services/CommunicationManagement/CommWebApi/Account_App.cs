@@ -1,4 +1,5 @@
 using System;
+using CommWebApi.DBWrappers;
 
 namespace CommWebApi.Account_App {
 
@@ -13,6 +14,6 @@ namespace CommWebApi.Account_App {
         public string first_name {get; set;}
         public string last_name {get; set;}
         public string email_addr {get; set;}
+
     }
-    
 }
