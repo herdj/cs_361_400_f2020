@@ -73,7 +73,7 @@ function Auth() {
         );
     } else {
         return (
-            <Button variant="light" onClick={(e) => {onAuthChange()}}><FcGoogle /> {loggedIn === "true" ? "Sign Out" : "Sign In With Google"}</Button>
+            <Button variant="light" onClick={(e) => {onAuthChange()}}><FcGoogle size={20} style={{paddingBottom: '3px'}}/> {loggedIn === "true" ? "Sign Out" : "Sign In With Google"}</Button>
         );
     }
 }

@@ -13,7 +13,7 @@ const Header = () => {
         <Container>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Brand href="/">
-                <BiBookReader className="navbar-logo" />
+                <BiBookReader className="navbar-logo" size={30} style={{paddingBottom: '3px'}}/>
             </Navbar.Brand>
             <Navbar.Brand href="/">Expert Finder</Navbar.Brand>
                 

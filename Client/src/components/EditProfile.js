@@ -5,6 +5,8 @@ import firebase from 'firebase/app';
 import Container from 'react-bootstrap/Container';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
+import { BsPlusCircleFill } from 'react-icons/bs';
+import { FaTrashAlt } from 'react-icons/fa';
 
 
 function EditProfile() {
@@ -38,7 +40,7 @@ function EditProfile() {
             skills: firebase.firestore.FieldValue.arrayUnion(skill)
         });
         setSkill('');
-        setLoadData("skillAdded");
+        setLoadData(skill);
     }
 
     const deleteSkill = async (skill) => {
@@ -48,7 +50,7 @@ function EditProfile() {
             skills: firebase.firestore.FieldValue.arrayRemove(skill)
         });
         setSkill(`${skill} deleted`);
-        setLoadData("skillDeleted");
+        setLoadData(skill);
     }
 
     const onAddUserCourse = async (e) => {
@@ -58,7 +60,7 @@ function EditProfile() {
             courses: firebase.firestore.FieldValue.arrayUnion(course)
         });
         setCourse('');
-        setLoadData("courseAdded");
+        setLoadData(course);
     }
 
     const deleteCourse = async (course) => {
@@ -68,7 +70,7 @@ function EditProfile() {
             courses: firebase.firestore.FieldValue.arrayRemove(course)
         });
         setCourse(`${course} deleted`);
-        setLoadData("courseDeleted");
+        setLoadData(course);
     }
 
     if (loggedIn === "start"){
@@ -86,42 +88,42 @@ function EditProfile() {
         return (
             <Container>
                 <div className="row pt-4">
-                    <div className="media col-5 justify-content-center"> 
-                        <img style={{border: "3px solid"}} src={userData === "start" ? "" :userData.photoURL} className="align-self-center mr-3" alt=""></img>
-                    </div>
-                    <div className="col text-center mr-5">
-                        <h1>{userData === "start" ? "Sign in to view profile" : userData.displayName}</h1>
-                        <h5>{userData.email}</h5>
+                    <div className="col">
+                    <h1>Edit Profile For: </h1>
+                        <h3 className="pt-2" >{userData === "start" ? "Sign in to view profile" : userData.displayName}</h3>
                     </div>
                 </div>
             <Tabs className="pt-4" defaultActiveKey="skills" id="uncontrolled-tab-example">
             <Tab eventKey="skills" title="Skills">
                             <div>
                                 <ul className="list-group list-group-flush pt-3">
+                                    <h5 className="pr-4 text-end" style={{textAlign: 'end'}}>Delete</h5>
                                     {userData !== "start" && userData.skills !== undefined && userData.skills.map(skill =>
-                                         <li className="list-group-item" key={skill}>{skill}<button onClick={() => deleteSkill(skill)}className="float-right btn btn-danger">Delete</button></li>)}
+                                         <li className="list-group-item" key={skill}>{skill}<button onClick={() => deleteSkill(skill)} className="float-right btn"><FaTrashAlt size={25} style={{color: 'red'}}/></button></li>)}
                                 </ul>
                             </div>
                        
-                            <div className="pt-3">
+                            <div className="pt-3 pl-3">
                                 <form onSubmit={onAddUserSkill}>
-                                    <input type="text" value={skill || ''} onChange={(e) => setSkill(e.target.value)} placeholder="Enter Skill" />
-                                    <button type="submit" className="btn btn-success ml-3" disabled={!skill}>Add Skill</button>
+                                    <input type="text" value={skill || ''} onChange={(e) => setSkill(e.target.value)} placeholder="Add Skill" />
+                                    <button type="submit" className="btn ml-3 mb-1" disabled={!skill}><BsPlusCircleFill size={40} style={{color: 'green'}} /></button>
                                 </form> 
                             </div>
             </Tab>
             <Tab eventKey="courses" title="Courses">
             <div>
                                 <ul className="list-group list-group-flush pt-3">
+                                <h5 className="pr-4" style={{textAlign: 'end'}}>Delete</h5>
                                     {userData !== "start" && userData.courses !== undefined && userData.courses.map(course => 
-                                    <li className="list-group-item" key={course}>{course}<button onClick={() => deleteCourse(course)}className="float-right btn btn-danger">Delete</button></li>)}
+                                    <li className="list-group-item" key={course}>{course}<button onClick={() => deleteCourse(course)}className="float-right btn"><FaTrashAlt size={25} style={{color: 'red'}}/></button></li>)}
                                 </ul>
                             </div>
+
                        
-                            <div className="pt-3">
+                            <div className="pt-3 pl-3" style={{display: 'flex', margin: 'auto', verticalAlign: 'middle'}}>
                                 <form onSubmit={onAddUserCourse}>
-                                    <input type="text" value={course || ''} onChange={(e) => setCourse(e.target.value)} placeholder="Enter Course" />
-                                    <button type="submit" className="btn btn-success ml-3" disabled={!course}>Add Course</button>
+                                    <input type="text" value={course || ''} onChange={(e) => setCourse(e.target.value)} placeholder="Add Course" />
+                                    <button type="submit" className="btn ml-3 mb-1" disabled={!course}><BsPlusCircleFill size={40} style={{color: 'green'}} /></button>
                                 </form> 
                             </div>
             </Tab>
@@ -138,7 +140,7 @@ function EditProfile() {
     } else {
         return (
             <Container className="mt-3">
-                <h1>Sign In To View Profile</h1>
+                <h1>Sign In To Edit Profile</h1>
             </Container>
         );
     }
