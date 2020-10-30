@@ -1,6 +1,8 @@
 # Expert Finder App
 (official app name pending)
 
+// Potential name --> "The Sharper App"
+
 By the Sharp Crayons.
 
 **Table of Contents**
@@ -25,3 +27,11 @@ MacOS
 
 Client - All client side code.\
 Services - All backend Apis and Database code.
+
+## Authors
+
+[Anjanette Oborn](https://github.com/oborna)
+[Jacob Musselman](https://github.com/#)
+[Joe Mulaney](https://github.com/mullanjo)
+[Joel Herd](https://github.com/#)
+[Lawrence Cramer](https://github.com/#)
