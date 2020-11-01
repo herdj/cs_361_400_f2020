@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: name of service (example "client-depl")
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: name of app (ex. "client")
+  template:
+    metadata:
+      labels:
+        app: name of app (ex. "client")
+    spec:
+      containers:
+        - name: name of app (ex. "client")
+          image: put the docker id
