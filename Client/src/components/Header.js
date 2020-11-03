@@ -21,6 +21,7 @@ const Header = () => {
                         <Nav className="mr-auto">
                             <Nav.Link href="/">Home</Nav.Link>
                             <Nav.Link href="/user-profile/edit">Edit Profile</Nav.Link>
+                            <Nav.Link href="/Invite">Invite an Expert</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                         <Auth />
