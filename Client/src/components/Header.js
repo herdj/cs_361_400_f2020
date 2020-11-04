@@ -22,6 +22,7 @@ const Header = () => {
                             <Nav.Link href="/">Home</Nav.Link>
                             <Nav.Link href="/user-profile/edit">Edit Profile</Nav.Link>
                             <Nav.Link href="/Invite">Invite an Expert</Nav.Link>
+                            <Nav.Link href="/Search">Search</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                         <Auth />
