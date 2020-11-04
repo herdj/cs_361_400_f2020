@@ -5,6 +5,7 @@ import Header from './Header';
 import EditProfile from './EditProfile';
 import HomePage from './HomePage';
 import Invite from './Invite';
+import Search from './Search';
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
         <Header />
           <Route path="/user-profile/edit" exact component={EditProfile} />
           <Route path="/" exact component={HomePage} />
-          <Route path="/Invite" exact component={Invite} />
+          <Route path="/invite" exact component={Invite} />
+          <Route path="/search" exact component={Search} />
       </div>
     </Router>
   );
