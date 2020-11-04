@@ -12,20 +12,18 @@ const Header = () => {
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Brand href="/">
-                <BiBookReader className="navbar-logo" size={30} style={{paddingBottom: '3px'}}/>
-            </Navbar.Brand>
-            <Navbar.Brand href="/">Expert Finder</Navbar.Brand>
-                
-                    <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav className="mr-auto">
-                            <Nav.Link href="/">Home</Nav.Link>
-                            <Nav.Link href="/user-profile/edit">Edit Profile</Nav.Link>
-                            <Nav.Link href="/Invite">Invite an Expert</Nav.Link>
-                            <Nav.Link href="/Search">Search</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                        <Auth />
+        <Navbar.Brand href="/">
+            <BiBookReader className="navbar-logo" size={30} style={{paddingBottom: '3px'}}/>
+        </Navbar.Brand>
+        <Navbar.Brand href="/">Sharper</Navbar.Brand>
+        <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mr-auto">
+                <Nav.Link href="/">Home</Nav.Link>
+                <Nav.Link href="/user-profile/edit">Edit Profile</Nav.Link>
+                <Nav.Link href="/invite">Invite an Expert</Nav.Link>
+            </Nav>
+        </Navbar.Collapse>
+        <Auth />
         </Container>
     </Navbar>
     </>
