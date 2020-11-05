@@ -6,6 +6,7 @@ import EditProfile from './EditProfile';
 import HomePage from './HomePage';
 import Invite from './Invite';
 import Search from './Search';
+import PopupTest from './PopupTest';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" exact component={HomePage} />
           <Route path="/invite" exact component={Invite} />
           <Route path="/search" exact component={Search} />
+          <Route path="/popup-test" exact component={PopupTest} />
       </div>
     </Router>
   );
