@@ -13,6 +13,7 @@ function App() {
         <a className="nav-link" href="#">Messages</a>
       </div>
       <div className="navbar-nav ml-auto">
+        <a className="nav-link" href="#">Invite a Friend</a>
         <a className="nav-link" href="#">Login</a>
         <a className="nav-link" href="#">Sign Up</a>
         <a className="nav-link" href="#">Logout</a>

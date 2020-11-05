@@ -7,6 +7,10 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import { BsPlusCircleFill } from 'react-icons/bs';
 import { FaTrashAlt } from 'react-icons/fa';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 
 function EditProfile() {
@@ -15,14 +19,22 @@ function EditProfile() {
     const [skill, setSkill] = useState('');
     const [course, setCourse] = useState('');
     const [loadData, setLoadData] = useState("start");
+    const [criteria, setCriteria] = useState("start");
+    const [industry, setIndustry] = useState('');
+    const [uid, setUid] = useState('');
+    const [displayName, setDisplayName] = useState('');
     
     useEffect(() => {
         const getUserData = async () => {
             if (auth.currentUser != null) {
                 const { uid } = auth.currentUser;
                 await firestore.collection('users').doc(uid).get().then(function(doc) {
-                    console.log("yo homie")
                     setUserData(doc.data());
+                }).catch(function(error) {
+                    console.log("error getting data: ", error);
+                })
+                await firestore.collection('criteria').doc('lookups').get().then(function(doc) {
+                    setCriteria(doc.data());
                 }).catch(function(error) {
                     console.log("error getting data: ", error);
                 })
@@ -43,18 +55,21 @@ function EditProfile() {
         setLoadData(skill);
     }
 
-    const deleteSkill = async (skill) => {
-        console.log(skill);
+    const deleteSkill = async (skill2) => {
+        console.log(skill2);
         const { uid } = auth.currentUser;
         await firestore.collection('users').doc(uid).update({
-            skills: firebase.firestore.FieldValue.arrayRemove(skill)
+            skills: firebase.firestore.FieldValue.arrayRemove(skill2)
         });
-        setSkill(`${skill} deleted`);
+        setSkill(`${skill2} deleted`);
         setLoadData(skill);
     }
 
     const onAddUserCourse = async (e) => {
         e.preventDefault();
+        if (validateCourse() === false) {
+            return;
+        }
         const { uid } = auth.currentUser;
         await firestore.collection('users').doc(uid).update({
             courses: firebase.firestore.FieldValue.arrayUnion(course)
@@ -63,21 +78,63 @@ function EditProfile() {
         setLoadData(course);
     }
 
-    const deleteCourse = async (course) => {
-        console.log(course);
+    const deleteCourse = async (course2) => {
+        console.log(course2);
         const { uid } = auth.currentUser;
         await firestore.collection('users').doc(uid).update({
-            courses: firebase.firestore.FieldValue.arrayRemove(course)
+            courses: firebase.firestore.FieldValue.arrayRemove(course2)
         });
-        setCourse(`${course} deleted`);
+        setCourse(`${course2} deleted`);
         setLoadData(course);
     }
+
+    const onChangeIndustry = async (event) => {
+        event.preventDefault();
+        await firestore.collection('users').doc(uid).update({
+            industry: industry
+        }).then(function() {
+            console.log("success for industry");
+        }).catch(function(error) {
+            console.error("Error updating document: ", error);
+        })
+        setLoadData(industry);
+    }
+
+    const handleIndustryChange = (event) => {
+        setIndustry(event.target.value);
+    }
+
+    const onChangeDisplayName = async (event) => {
+        event.preventDefault();
+        await firestore.collection('users').doc(uid).update({
+            displayName: displayName
+        }).then(function() {
+            console.log("success for display name");
+        }).catch(function(error) {
+            console.error("Error updating document: ", error);
+        })
+        setLoadData(displayName);
+    }
+
+
+    function validateCourse(){
+        let courseCode = course;
+        let courseRGEX = /^[A-Z]{1,4}[_]{0,1}[-]{0,1}[ ]{0,1}[0-9]{3}$/i;
+        let courseResult = courseRGEX.test(courseCode);
+        if(courseResult === false) {
+          alert('Please enter a valid course number (examples: CS290, CS 290, CS_290, CS-290)');
+          return false;
+        }
+        return true;
+      }
 
     if (loggedIn === "start"){
         auth.onAuthStateChanged(function(user) {
             if(user) {
                 setLoggedIn("true");
                 setLoadData("loadInitalData")
+                const { uid } = auth.currentUser;
+                setUid(uid);
             } else {
                 setLoggedIn("false");
             }
@@ -111,7 +168,7 @@ function EditProfile() {
                             </div>
             </Tab>
             <Tab eventKey="courses" title="Courses">
-            <div>
+                            <div>
                                 <ul className="list-group list-group-flush pt-3">
                                 <h5 className="pr-4" style={{textAlign: 'end'}}>Delete</h5>
                                     {userData !== "start" && userData.courses !== undefined && userData.courses.map(course => 
@@ -126,6 +183,33 @@ function EditProfile() {
                                     <button type="submit" className="btn ml-3 mb-1" disabled={!course}><BsPlusCircleFill size={40} style={{color: 'green'}} /></button>
                                 </form> 
                             </div>
+            </Tab>
+            <Tab eventKey="industry" title="Industry">
+                <h4>Current Industry: {userData !== "start" && userData.industry !== undefined ? userData.industry : ''}</h4>
+            <Form onSubmit={onChangeIndustry}>
+                <Form.Group controlId="exampleForm.ControlSelect1">
+                    <Form.Label>Update Industry</Form.Label>
+                    <Form.Control value={industry} as="select" onChange={handleIndustryChange}>
+                    {criteria !== "start" && criteria.industries !== undefined && criteria.industries.map(industry => 
+                                    <option value={industry} key={industry}>{industry}</option>)}
+                    </Form.Control> 
+                </Form.Group>
+                <Button variant="primary" type="submit">Submit</Button>
+            </Form>
+            </Tab>
+            <Tab eventKey="displayName" title="Display Name">
+                <h4>Current Display Name: {userData !== "start" && userData.displayName !== undefined ? userData.displayName : ''}</h4>
+            <Form onSubmit={onChangeDisplayName}>
+                <Form.Group as={Row} controlId="formPlaintextPassword">
+                    <Form.Label column sm="2">
+                        Update Display Name
+                    </Form.Label>
+                    <Col sm="10">
+                    <Form.Control type="text" value={displayName || ''} onChange={(e) => setDisplayName(e.target.value)} placeholder={userData !== "start" && userData.displayName !== undefined ? userData.displayName : ''} />
+                    </Col>
+                </Form.Group>
+                <Button variant="primary" type="submit">Submit</Button>
+            </Form>
             </Tab>
             </Tabs>
             </Container>
@@ -144,7 +228,6 @@ function EditProfile() {
             </Container>
         );
     }
-
 }
 
 export default EditProfile;  

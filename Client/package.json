@@ -9,6 +9,7 @@
     "bootstrap": "^4.5.3",
     "firebase": "^8.0.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "react": "^16.14.0",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^16.14.0",
@@ -17,10 +18,15 @@
     "react-bootstrap": "^1.4.0",
     "react-dom": "^16.13.1",
 >>>>>>> master
+=======
+    "react": "^16.14.0",
+    "react-bootstrap": "^1.4.0",
+    "react-dom": "^16.14.0",
+>>>>>>> master
     "react-firebase-hooks": "^2.2.0",
     "react-icons": "^3.11.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3"
+    "react-scripts": "^3.4.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
