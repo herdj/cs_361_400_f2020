@@ -4,6 +4,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
+import Figure from "react-bootstrap/Figure";
+import FigureImage from "react-bootstrap/FigureImage";
 import Spinner from "react-bootstrap/Spinner";
 import gh_mark from "../assets/images/GitHub-Mark-120px-plus.png";
 import gh_followers_icon from "../assets/images/icons/gh_followers.PNG";
@@ -66,10 +68,7 @@ function GitHubUserInfo() {
         <Container fluid>
             <Row>
                 <Col className="text-center">
-                    {/** TODO }
-                    <Image src={"data.avatar_url"} alt="" />
-                    {**/}
-                    <Image src={gh_mark} roundedCircle />
+                    <Image src={data.avatar_url} alt="" width={120} height={120} roundedCircle/>
                 </Col>
             </Row>
             <Row>
@@ -82,7 +81,7 @@ function GitHubUserInfo() {
             : "" }
             <Row className="mb-2">
                 <Col className="text-center">
-                    <Button href={"data.html_url"} size="sm" variant="outline-secondary">
+                    <Button href={data.html_url} size="sm" variant="outline-secondary">
                         Visit Profile
                     </Button>
                 </Col>
