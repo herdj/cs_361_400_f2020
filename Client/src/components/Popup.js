@@ -1,5 +1,6 @@
 import React, {forwardRef, useImperativeHandle} from "react";
 import ReactDOM from "react-dom";
+import { GrClose } from 'react-icons/gr';
 
 /* Popup Component Styles */
 const WRAPPER_STYLES = {
@@ -26,13 +27,24 @@ const CONTENT_STYLES = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     overflowY: "auto",
+    overflowX: "auto",
     width: "45%",
     minHeight: "50%",
     maxHeight: "60%",
     padding: "35px",
     backgroundColor: "#FFF",
     boxShadow: "0 0 12px rgba(0, 0, 0, .2)",
+    borderRadius: "25px",
     zIndex: 9001
+}
+
+const CLOSE_ICON_STYLES = {
+    position: "absolute",
+    top: "20px",
+    right: "20px",
+    height: "25px",
+    width: "25px",
+    cursor: "pointer"
 }
 
 /* Popup Function Component */
@@ -65,7 +77,7 @@ const Popup = forwardRef((props, ref) => {
         setOpen(false); 
     };
 
-    // If display is false, return nothing
+    // If show is false, return nothing
     if (!open) {
         return null;
     }
@@ -77,6 +89,7 @@ const Popup = forwardRef((props, ref) => {
         <div className={"popup-wrapper"} style={WRAPPER_STYLES}>
             <div className={"popup-backdrop"} onClick={closePopup} style={BACKDROP_STYLES}/>
             <div className={"popup-content"} style={CONTENT_STYLES}>
+                <GrClose onClick={closePopup} style={CLOSE_ICON_STYLES}/>
                 { props.children }
             </div>
         </div>,

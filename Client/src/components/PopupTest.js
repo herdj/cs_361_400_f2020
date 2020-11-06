@@ -1,9 +1,11 @@
 import React from "react";
 import Popup from "./Popup";
+import GitHubUserInfo from "./GitHubUserInfo";
+import GitHubUserRepoInfo from "./GitHubUserRepoInfo";
 import Button from "react-bootstrap/Button";
 
 
-function ViewProfile() {
+function PopupTest() {
 
   /************************* POPUP - START ****************************/
 
@@ -20,7 +22,7 @@ function ViewProfile() {
   /************************** POPUP - END *****************************/
 
   return (
-    <div className="ViewProfile">
+    <div className="PopupTest">
 
     {/************************ POPUP - START *************************/}
     
@@ -29,6 +31,11 @@ function ViewProfile() {
     </Button>
 
     <Popup ref={popupRef}>
+
+    <GitHubUserInfo></GitHubUserInfo>
+      <hr />
+    <GitHubUserRepoInfo></GitHubUserRepoInfo>
+
     </Popup>
     
     {/*********************** POPUP - START **************************/}
@@ -37,4 +44,4 @@ function ViewProfile() {
   );
 }
 
-export default ViewProfile;
+export default PopupTest;
