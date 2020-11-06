@@ -1,6 +1,7 @@
 import React from "react";
 import Popup from "./Popup";
 import GitHubUserInfo from "./GitHubUserInfo";
+import GitHubUserRepoInfo from "./GitHubUserRepoInfo";
 import Button from "react-bootstrap/Button";
 
 
@@ -32,6 +33,8 @@ function PopupTest() {
     <Popup ref={popupRef}>
 
     <GitHubUserInfo></GitHubUserInfo>
+      <hr />
+    <GitHubUserRepoInfo></GitHubUserRepoInfo>
 
     </Popup>
     
