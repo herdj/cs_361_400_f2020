@@ -44,7 +44,7 @@ function GitHubUserRepoInfo() {
         <Container fluid>
             <Row>
                 <Col className="text-center">
-                    <span> Loading... </span>
+                    <span> Loading repositories... </span>
                 </Col>
             </Row>
         </Container>
