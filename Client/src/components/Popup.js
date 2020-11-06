@@ -27,6 +27,7 @@ const CONTENT_STYLES = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     overflowY: "auto",
+    overflowX: "auto",
     width: "45%",
     minHeight: "50%",
     maxHeight: "60%",
