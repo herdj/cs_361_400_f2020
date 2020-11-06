@@ -1,61 +1,78 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { firestore } from '../firebase/firebase';
+import { useState } from 'react';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-class InviteExpert extends React.Component {
-    constructor(props) {
-        super(props);
-        this.first_name = "";
-        this.last_name = "";
-        this.email_addr = "";
-        this.state = { bSubmitted : false };
+function InviteExpert() {
+    const fire_base = firestore.collection('users');
+    const query = fire_base;
+    const [first_name, setFirst_name] = useState('');
+    const [last_name, setLast_name] = useState('');
+    const [email, setEmail] = useState('');
+    const [success, setSuccess] = useState(false);
+    const [fail, setFail] = useState(false);
+    const [profileRegistry] = useCollectionData(query, {idField : 'id'});
+
+    const check_mail = () => {
+        console.log(profileRegistry.length);
+        for (let i = 0; i < profileRegistry.length; i++) {
+            if (profileRegistry[i].email.toLowerCase() === email.toLowerCase()) {
+                setFail(true);
+                return false;
+            };
+        }
+        setSuccess(true);
+        return true;
     }
-    submit_handler = (event) => {
+
+    const validate = (email_addr) => {
+        const expression = /\S+@\S+/
+        return expression.test(String(email_addr).toLowerCase())
+    }
+
+    const submit_handler = (event) => {
         event.preventDefault();
-        const form_data = new FormData(event.target);
-        this.first_name = form_data.get('first_name');
-        this.last_name = form_data.get('last_name');
-        this.email_addr = form_data.get('email_addr');
-        let out = {
-            'first_name' : this.first_name,
-            'last_name' : this.last_name,
-            'email_address' : this.email_addr
+        if (check_mail()){
+            return;
         }
-        console.log(JSON.stringify(out));
-        if (this.first_name !== "" && this.last_name !== "" && this.email_add !== ""){
-            this.setState ({ bSubmitted : true });
-        }
-        fetch('http://localhost:5000/CMS/new_app', {
-            method: "POST",
-            body: JSON.stringify(out),
-            headers: {
-                'Accept' : 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(response => console.log(response))
     }
-    render(){
-        if (this.state.bSubmitted === false) return ( 
-            <div>
-                <h1>Invite an Expert</h1>
-                <form onSubmit = {this.submit_handler}>
-                    <label htmlFor="text">First Name: </label>
-                    <input type="text" name="first_name" id="first_name"/><br/>
-                    <label htmlFor="text">Last Name: </label>
-                    <input type="text" name="last_name" id="last_name"/><br/>
-                    <label htmlFor="email">Email Address: </label>
-                    <input type="email" name="email_addr" id="email_addr"/><br/>
-                    <input type="submit"/>
-                </form>
-            </div>    
-        );
-        if (this.state.bSubmitted === true) return (
-            <div>
-                <h1>Invite an Expert</h1>
-                <p>Thanks for inviting {this.first_name} {this.last_name}</p>
-            </div>
-        );
-    }
+
+    return (
+        <Container fluid="md">
+            <h1>Invite an Expert</h1>
+            { success === false && fail === false && (
+            <Row>
+                <Col xs="4">
+                    <Form onSubmit = {submit_handler}>
+                        <Form.Group>
+                            <Form.Control type="text" onChange={(e)=>setFirst_name(e.target.value)} placeholder="first name"/><br/>
+                            <Form.Control type="text" onChange={(e)=>setLast_name(e.target.value)} placeholder="last name"/><br/>
+                            <Form.Control type="email" onChange={(e)=>setEmail(e.target.value)} placeholder="email address"/><br/>
+                            <Button variant="primary" type="submit">Invite Expert</Button>
+                        </Form.Group>
+                    </Form>
+                </Col>
+            </Row>
+            )}
+            { success === true && (
+                <div>
+                    <p>Thanks for inviting {first_name} {last_name}</p>
+                    <Button variant="primary" onClick={(e)=>setSuccess(false)}>Okay</Button>
+                </div>
+                )}
+            { fail === true && (
+                <div>
+                    <p>{first_name} {last_name} is already one of our experts.</p>
+                    <Button variant="primary" onClick={(e)=>setFail(false)}>Okay</Button>
+                </div>
+            )}
+        </Container>
+    );
 }
 
 export default InviteExpert;
