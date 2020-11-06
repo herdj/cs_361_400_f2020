@@ -12,9 +12,9 @@ namespace CommWebApi.Messages{
             mail_message = new MailMessage(from, to);
             mail_message.Subject = "Join us, expert!";
             mail_message.Body = Application_Body;
-            DBWrapper Wrapper = new DBWrapper();
-            Wrapper.add_to_DB(first_name, last_name, email_addr);
-            Wrapper = null; 
+            // DBWrapper Wrapper = new DBWrapper();
+            // Wrapper.add_to_DB(first_name, last_name, email_addr);
+            // Wrapper = null; 
             send_message();
         }
         private MailMessage mail_message {get; set;}
