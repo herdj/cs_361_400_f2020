@@ -31,7 +31,12 @@ function Auth() {
             photoURL,
             displayName,
             skills: [],
-            courses: []
+            courses: [],
+            organization: '',
+            industry: '',
+            gitHub: '',
+            linkedIn: '',
+            twitter: ''
         }, {merge: true}).then(function() {
         }).catch(function(error) {
             console.log("there was an error", error);
