@@ -24,6 +24,10 @@ const ICON_STYLES = {
     cursor: "pointer"
 }
 
+const ICON_STYLES_LINK = {
+    color: "inherit"
+}
+
 function ViewProfile() {
 
     let { id } = useParams();
@@ -39,7 +43,7 @@ function ViewProfile() {
 
 function ProfileData(props) {
 
-    const { displayName, courses, skills, photoURL, email, uid } = props.data;
+    const { displayName, courses, skills, photoURL, email, uid, gitHub, linkedIn, twitter } = props.data;
     const [loggedIn, setLoggedIn] = useState("start");
 
 /************************** POPUP - START *****************************/
@@ -89,9 +93,15 @@ function ProfileData(props) {
                     <h2 className="mb-0 pb-0">{displayName}</h2>
                     <span className="my-2">{email}</span><br />
                     <span>
-                        <GrGithub className="mr-3 my-2" style={ICON_STYLES}/> 
-                        <GrTwitter className="mr-3 my-2" style={ICON_STYLES}/> 
-                        <GrLinkedin className="mr-3 my-2" style={ICON_STYLES}/> 
+                        <a href={"https://www.linkedin.com/in/" + linkedIn} style={ICON_STYLES_LINK}>
+                            <GrLinkedin className="mr-3 my-2" style={ICON_STYLES}/>
+                        </a>
+                        <a href={"https://twitter.com/" + twitter} style={ICON_STYLES_LINK}>
+                            <GrTwitter className="mr-3 my-2" style={ICON_STYLES}/> 
+                        </a>
+                        <a href={"https://github.com/" + gitHub} style={ICON_STYLES_LINK}>
+                            <GrGithub className="mr-3 my-2" style={ICON_STYLES}/>
+                        </a>
                         <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={openPopup}>
                             GitHub Preview
                         </Button>

@@ -81,7 +81,7 @@ function GitHubUserInfo() {
             : "" }
             <Row className="mb-2">
                 <Col className="text-center">
-                    <Button href={data.html_url} size="sm" variant="outline-secondary">
+                    <Button href={data.html_url} size="sm" variant="outline-dark">
                         Visit Profile
                     </Button>
                 </Col>
