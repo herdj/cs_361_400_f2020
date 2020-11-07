@@ -23,6 +23,8 @@ function EditProfile() {
     const [industry, setIndustry] = useState('');
     const [uid, setUid] = useState('');
     const [displayName, setDisplayName] = useState('');
+    const [courseSubject, setCourseSubject] = useState('');
+    const [courseNumber, setCourseNumber] = useState('');
     
     useEffect(() => {
         const getUserData = async () => {
@@ -65,18 +67,7 @@ function EditProfile() {
         setLoadData(skill);
     }
 
-    const onAddUserCourse = async (e) => {
-        e.preventDefault();
-        if (validateCourse() === false) {
-            return;
-        }
-        const { uid } = auth.currentUser;
-        await firestore.collection('users').doc(uid).update({
-            courses: firebase.firestore.FieldValue.arrayUnion(course)
-        });
-        setCourse('');
-        setLoadData(course);
-    }
+   
 
     const deleteCourse = async (course2) => {
         console.log(course2);
@@ -116,17 +107,37 @@ function EditProfile() {
         setLoadData(displayName);
     }
 
+    const handleCourseSubjectChange = (event) => {
+        setCourseSubject(event.target.value);
+    }
 
-    function validateCourse(){
-        let courseCode = course;
-        let courseRGEX = /^[A-Z]{1,4}[_]{0,1}[-]{0,1}[ ]{0,1}[0-9]{3}$/i;
-        let courseResult = courseRGEX.test(courseCode);
-        if(courseResult === false) {
-          alert('Please enter a valid course number (examples: CS290, CS 290, CS_290, CS-290)');
-          return false;
-        }
-        return true;
-      }
+    const handleCourseNumberChange = (event) => {
+        setCourseNumber(parseInt(event.target.value, 10));
+    }
+
+    const onSubmitCourseTwo = async (event) => {
+        event.preventDefault();
+        let combineCourse = courseSubject + ' ' + courseNumber;
+        const { uid } = auth.currentUser;
+        await firestore.collection('users').doc(uid).update({
+            courses: firebase.firestore.FieldValue.arrayUnion(combineCourse)
+        });
+        setCourseSubject('');
+        setCourseNumber('');
+        setLoadData(combineCourse);
+    }
+
+
+    // function validateCourse(){
+    //     let courseCode = course;
+    //     let courseRGEX = /^[A-Z]{1,4}[_]{0,1}[-]{0,1}[ ]{0,1}[0-9]{3}$/i;
+    //     let courseResult = courseRGEX.test(courseCode);
+    //     if(courseResult === false) {
+    //       alert('Please enter a valid course number (examples: CS290, CS 290, CS_290, CS-290)');
+    //       return false;
+    //     }
+    //     return true;
+    //   }
 
     if (loggedIn === "start"){
         auth.onAuthStateChanged(function(user) {
@@ -168,21 +179,24 @@ function EditProfile() {
                             </div>
             </Tab>
             <Tab eventKey="courses" title="Courses">
-                            <div>
+                             <div>
                                 <ul className="list-group list-group-flush pt-3">
                                 <h5 className="pr-4" style={{textAlign: 'end'}}>Delete</h5>
                                     {userData !== "start" && userData.courses !== undefined && userData.courses.map(course => 
                                     <li className="list-group-item" key={course}>{course}<button onClick={() => deleteCourse(course)}className="float-right btn"><FaTrashAlt size={25} style={{color: 'red'}}/></button></li>)}
                                 </ul>
                             </div>
-
-                       
-                            <div className="pt-3 pl-3" style={{display: 'flex', margin: 'auto', verticalAlign: 'middle'}}>
-                                <form onSubmit={onAddUserCourse}>
-                                    <input type="text" value={course || ''} onChange={(e) => setCourse(e.target.value)} placeholder="Add Course" />
-                                    <button type="submit" className="btn ml-3 mb-1" disabled={!course}><BsPlusCircleFill size={40} style={{color: 'green'}} /></button>
-                                </form> 
-                            </div>
+                <Form inline onSubmit={onSubmitCourseTwo}>
+                    <Form.Group controlId="exampleForm.ControlSelect1" >
+                    <Form.Label className="pr-2">Add Course: </Form.Label>
+                        <Form.Control className="mr-sm-2" value={courseSubject} as="select" onChange={handleCourseSubjectChange}>
+                        {criteria !== "start" && criteria.courses !== undefined && criteria.courses.map(courseSubject => 
+                                    <option value={courseSubject} key={courseSubject}>{courseSubject}</option>)}
+                        </Form.Control> 
+                        <Form.Control placeholder={courseNumber} type="text" onChange={handleCourseNumberChange}></Form.Control> 
+                    </Form.Group>
+                    <button type="submit" className="btn ml-3 mb-1" disabled={!course}><BsPlusCircleFill size={40} style={{color: 'green'}} /></button>
+                </Form>
             </Tab>
             <Tab eventKey="industry" title="Industry">
                 <h4>Current Industry: {userData !== "start" && userData.industry !== undefined ? userData.industry : ''}</h4>
