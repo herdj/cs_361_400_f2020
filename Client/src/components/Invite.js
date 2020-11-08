@@ -17,9 +17,21 @@ function InviteExpert() {
     const [success, setSuccess] = useState(false);
     const [fail, setFail] = useState(false);
     const [profileRegistry] = useCollectionData(query, {idField : 'id'});
+    const [api_address] = useState("http://localhost:5000/CMS/new_app")
+    const req = {
+        method: "POST",
+        body: JSON.stringify({
+            first_name : first_name,
+            last_name : last_name,
+            email_address : email
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    };
 
     const check_mail = () => {
-        console.log(profileRegistry.length);
         for (let i = 0; i < profileRegistry.length; i++) {
             if (profileRegistry[i].email.toLowerCase() === email.toLowerCase()) {
                 setFail(true);
@@ -27,12 +39,9 @@ function InviteExpert() {
             };
         }
         setSuccess(true);
+        fetch(api_address, req)
+        .then(data => console.log(data));
         return true;
-    }
-
-    const validate = (email_addr) => {
-        const expression = /\S+@\S+/
-        return expression.test(String(email_addr).toLowerCase())
     }
 
     const submit_handler = (event) => {
