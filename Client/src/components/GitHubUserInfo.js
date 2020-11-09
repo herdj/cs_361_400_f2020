@@ -81,7 +81,7 @@ function GitHubUserInfo() {
             : "" }
             <Row className="mb-2">
                 <Col className="text-center">
-                    <Button href={data.html_url} size="sm" variant="outline-secondary">
+                    <Button href={data.html_url} target="_blank" size="sm" variant="outline-dark">
                         Visit Profile
                     </Button>
                 </Col>
@@ -108,7 +108,8 @@ function GitHubUserInfo() {
                     : "" }
                     { data.blog !== "" ?
                     <span className="mx-2">
-                        <img src={gh_blog_icon} alt="" style={ICON_STYLES} /> {data.blog}
+                        <img src={gh_blog_icon} alt="" style={ICON_STYLES} />
+                        <a href={data.blog} target="_blank"> {data.blog} </a>
                     </span>
                     : "" }
                 </Col>

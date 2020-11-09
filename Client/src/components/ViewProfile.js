@@ -25,6 +25,10 @@ const ICON_STYLES = {
     cursor: "pointer"
 }
 
+const ICON_STYLES_LINK = {
+    color: "inherit"
+}
+
 function ViewProfile() {
 
     let { id } = useParams();
@@ -40,7 +44,7 @@ function ViewProfile() {
 
 function ProfileData(props) {
 
-    const { displayName, courses, skills, photoURL, email, uid, organization, industry } = props.data;
+    const { displayName, courses, skills, photoURL, email, uid, organization, industry, gitHub, linkedIn, twitter } = props.data;
     const [loggedIn, setLoggedIn] = useState("start");
     
     let awardCourse;
@@ -101,13 +105,19 @@ function ProfileData(props) {
                     <h1 className="mb-0 pb-0 pl-1">{displayName}</h1>
                     <span className="my-2 text-info">{email}</span><br />
                     <span className="pl-4">
-                        <GrGithub className="mr-3 my-2" style={ICON_STYLES}/> 
-                        <GrTwitter className="mr-3 my-2" style={ICON_STYLES}/> 
-                        <GrLinkedin className="mr-3 my-2" style={ICON_STYLES}/> <br />
+                        <a href={"https://www.linkedin.com/in/" + linkedIn}  target="_blank" style={ICON_STYLES_LINK}>
+                            <GrLinkedin className="mr-3 my-2" style={ICON_STYLES}/>
+                        </a>
+                        <a href={"https://twitter.com/" + twitter}  target="_blank" style={ICON_STYLES_LINK}>
+                            <GrTwitter className="mr-3 my-2" style={ICON_STYLES}/> 
+                        </a>
+                        <a href={"https://github.com/" + gitHub}  target="_blank" style={ICON_STYLES_LINK}>
+                            <GrGithub className="mr-3 my-2" style={ICON_STYLES}/>
+                        </a> <br />
                         <div className="pl-3">
-                        <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={openPopup}>
-                            GitHub Preview
-                        </Button>
+                          <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={openPopup}>
+                              GitHub Preview
+                          </Button>
                         </div>
                     </span>
                 </Col>
