@@ -64,7 +64,7 @@ function GitHubUserRepoInfo() {
                             <ListGroup.Item key={repo.id}>
                                 <table>
                                     <tr>
-                                        <td><a href={repo.html_url}>{repo.name}</a></td>
+                                        <td><a href={repo.html_url} target="_blank">{repo.name}</a></td>
                                     </tr>
                                     <tr>
                                         <td>{repo.description}</td>
