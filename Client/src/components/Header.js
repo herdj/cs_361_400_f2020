@@ -21,7 +21,6 @@ const Header = () => {
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/user-profile/edit">Edit Profile</Nav.Link>
                 <Nav.Link href="/invite">Invite an Expert</Nav.Link>
-                <Nav.Link href="/popup-test">Popup (testing only)</Nav.Link>
             </Nav>
         </Navbar.Collapse>
         <Auth />
