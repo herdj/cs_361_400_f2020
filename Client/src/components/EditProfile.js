@@ -112,11 +112,12 @@ function EditProfile() {
     }
 
     const handleCourseNumberChange = (event) => {
-        setCourseNumber(parseInt(event.target.value, 10));
+        setCourseNumber(event.target.value);
     }
 
     const onSubmitCourseTwo = async (event) => {
         event.preventDefault();
+        validateCourse();
         let combineCourse = courseSubject + ' ' + courseNumber;
         const { uid } = auth.currentUser;
         await firestore.collection('users').doc(uid).update({
@@ -128,16 +129,17 @@ function EditProfile() {
     }
 
 
-    // function validateCourse(){
-    //     let courseCode = course;
-    //     let courseRGEX = /^[A-Z]{1,4}[_]{0,1}[-]{0,1}[ ]{0,1}[0-9]{3}$/i;
-    //     let courseResult = courseRGEX.test(courseCode);
-    //     if(courseResult === false) {
-    //       alert('Please enter a valid course number (examples: CS290, CS 290, CS_290, CS-290)');
-    //       return false;
-    //     }
-    //     return true;
-    //   }
+    function validateCourse(){
+        let courseCode = courseNumber;
+        let courseRGEX = /^[0-9]{3}$/i;
+        // let courseRGEX = /^[A-Z]{1,4}[_]{0,1}[-]{0,1}[ ]{0,1}[0-9]{3}$/i;
+        let courseResult = courseRGEX.test(courseCode);
+        if(courseResult === false) {
+          alert('Please enter a valid course number (examples: CS290, CS 290, CS_290, CS-290)');
+          return false;
+        }
+        return true;
+      }
 
     if (loggedIn === "start"){
         auth.onAuthStateChanged(function(user) {
@@ -190,12 +192,13 @@ function EditProfile() {
                     <Form.Group controlId="exampleForm.ControlSelect1" >
                     <Form.Label className="pr-2">Add Course: </Form.Label>
                         <Form.Control className="mr-sm-2" value={courseSubject} as="select" onChange={handleCourseSubjectChange}>
+                            <option>Pick A Course</option>
                         {criteria !== "start" && criteria.courses !== undefined && criteria.courses.map(courseSubject => 
                                     <option value={courseSubject} key={courseSubject}>{courseSubject}</option>)}
                         </Form.Control> 
-                        <Form.Control placeholder={courseNumber} type="text" onChange={handleCourseNumberChange}></Form.Control> 
+                        <Form.Control placeholder="" type="text" onChange={handleCourseNumberChange}></Form.Control> 
                     </Form.Group>
-                    <button type="submit" className="btn ml-3 mb-1" disabled={!course}><BsPlusCircleFill size={40} style={{color: 'green'}} /></button>
+                    <button type="submit" className="btn ml-3 mb-1" disabled={!courseNumber || !courseSubject}><BsPlusCircleFill size={40} style={{color: 'green'}} /></button>
                 </Form>
             </Tab>
             <Tab eventKey="industry" title="Industry">
