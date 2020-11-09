@@ -17,6 +17,7 @@ import Button from 'react-bootstrap/Button';
 import { GrGithub } from 'react-icons/gr';
 import { GrTwitter } from 'react-icons/gr';
 import { GrLinkedin } from 'react-icons/gr';
+import { GrStar } from 'react-icons/gr';
 
 const ICON_STYLES = {
     height: "20px",
@@ -39,8 +40,19 @@ function ViewProfile() {
 
 function ProfileData(props) {
 
-    const { displayName, courses, skills, photoURL, email, uid } = props.data;
+    const { displayName, courses, skills, photoURL, email, uid, organization, industry } = props.data;
     const [loggedIn, setLoggedIn] = useState("start");
+    
+    let awardCourse;
+    if (courses.length > 4) {
+        awardCourse =  <GrStar className="mb-2" style={ICON_STYLES}/>;
+    }
+    
+    let awardSkills;
+    if (skills.length >= 1) {
+        awardSkills = <GrStar className="mb-2" style={ICON_STYLES}/>;
+    }
+
 
 /************************** POPUP - START *****************************/
 
@@ -80,25 +92,42 @@ function ProfileData(props) {
 {/*************************** POPUP - END ****************************/}
         
         <Container className="mt-5">
-            <Row className="justify-content-center pb-5">
+            <Row className="justify-content-center pb-2">
                 <Col xs={1} md={1}></Col>
-                <Col className="text-right" xs={2} md={4}>
-                    <Image src={photoURL} alt="" roundedCircle/><br />
+                <Col className="text-right" xs={3} md={4}>
+                    <Image className="mt-2" src={photoURL} alt="" width={125} height={125} roundedCircle/><br />
                 </Col>
-                <Col className="text-left" xs={8} md={6}>
-                    <h2 className="mb-0 pb-0">{displayName}</h2>
-                    <span className="my-2">{email}</span><br />
-                    <span>
+                <Col className="text-left font-italic pl-4" style={{color: '#343a40'}} xs={7} md={6}>
+                    <h1 className="mb-0 pb-0 pl-1">{displayName}</h1>
+                    <span className="my-2 text-info">{email}</span><br />
+                    <span className="pl-4">
                         <GrGithub className="mr-3 my-2" style={ICON_STYLES}/> 
                         <GrTwitter className="mr-3 my-2" style={ICON_STYLES}/> 
-                        <GrLinkedin className="mr-3 my-2" style={ICON_STYLES}/> 
+                        <GrLinkedin className="mr-3 my-2" style={ICON_STYLES}/> <br />
+                        <div className="pl-3">
                         <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={openPopup}>
                             GitHub Preview
                         </Button>
+                        </div>
                     </span>
                 </Col>
                 <Col xs={1} md={1}></Col>
             </Row>
+            <div className="ml-5 text-capitalize" style={{color: '#343a40'}}>
+            <dl className="row">
+                <dt className="col-sm-12 col-md-3 col-lg-2 text-md-right">{awardCourse}COURSES</dt>
+                <dd className="col-sm-12 col-md-9 col-lg-10 font-italic">| {courses && courses.map(course => <span key={course}>{course} | </span>)}</dd>
+
+                <dt className="col-sm-12 col-md-3 col-lg-2 text-md-right">{awardSkills}SKILLS</dt>
+                <dd className="col-sm-12 col-md-9 col-lg-10 font-italic">| {skills && skills.map(skill => <span key={skill}>{skill} | </span>)}</dd>
+
+                <dt className="col-sm-12 col-md-3 col-lg-2 text-md-right">ORGANIZATION</dt>
+                <dd className="col-sm-12 col-md-9 col-lg-10 font-italic">| {organization} |</dd>
+            
+                <dt className="col-sm-12 col-md-3 col-lg-2 text-md-right">INDUSTRY</dt>
+                <dd className="col-sm-12 col-md-9 col-lg-10 font-italic">| {industry} |</dd>
+            </dl>
+            </div>
         </Container>
         </>
     )
