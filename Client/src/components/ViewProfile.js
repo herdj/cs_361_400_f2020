@@ -47,14 +47,48 @@ function ProfileData(props) {
     const { displayName, courses, skills, photoURL, email, uid, organization, industry, gitHub, linkedIn, twitter } = props.data;
     const [loggedIn, setLoggedIn] = useState("start");
     
+    // Award Trophy to users with more than X courses
     let awardCourse;
-    if (courses.length > 4) {
+    if (courses.length > 3) {
         awardCourse =  <GrStar className="mb-2" style={ICON_STYLES}/>;
     }
     
+    // Award Trophy to users with more than X skills
     let awardSkills;
-    if (skills.length >= 1) {
+    if (skills.length >= 3) {
         awardSkills = <GrStar className="mb-2" style={ICON_STYLES}/>;
+    }
+
+    // Display string placeholder when no courses are listed in user profile
+    let noCourses;
+    if (courses.length == 0) {
+        noCourses = " No courses listed |"
+    }
+
+    // Display string placeholder when no skills are listed in user profile
+    let noSkills;
+    if (skills.length == 0) {
+        noSkills = " No skills listed |"
+    }
+
+    // Display Skills placeholder text when no skills are listed in user profile.
+    // Test if database contains 'organization' criteria.
+    // Test else if 'organization' is listed as empty String. 
+    let noOrganization;
+    if (typeof(organization) == 'undefined') {
+        noOrganization = " No organization listed"
+    } else if (organization == "") {    
+        noOrganization = " No organization listed"
+    }
+
+    // Display Industry placeholder text when no industry is listed in user profile.
+    // Test if database contains 'industry' criteria.
+    // Test else if 'industry' is listed as empty String.
+    let noIndustry;
+    if (typeof(industry) == 'undefined') {
+        noIndustry = " No industry listed"
+    } else if (industry == "") {
+        noIndustry = " No industry listed"
     }
 
 
@@ -123,20 +157,27 @@ function ProfileData(props) {
                 </Col>
                 <Col xs={1} md={1}></Col>
             </Row>
-            <div className="ml-5 text-capitalize" style={{color: '#343a40'}}>
-            <dl className="row">
-                <dt className="col-sm-12 col-md-3 col-lg-2 text-md-right">{awardCourse}COURSES</dt>
-                <dd className="col-sm-12 col-md-9 col-lg-10 font-italic">| {courses && courses.map(course => <span key={course}>{course} | </span>)}</dd>
+            <div className="container-fluid col-8">
+            <div className="text-capitalize col-auto" style={{color: '#343a40'}}>
+            <dl className="row border rounded border-warning auto-x">
+                <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">{awardCourse}COURSES</dt>
+                <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noCourses}{courses && courses.map(course => <span key={course}>{course} | </span>)}</dd>
 
-                <dt className="col-sm-12 col-md-3 col-lg-2 text-md-right">{awardSkills}SKILLS</dt>
-                <dd className="col-sm-12 col-md-9 col-lg-10 font-italic">| {skills && skills.map(skill => <span key={skill}>{skill} | </span>)}</dd>
+                <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">{awardSkills}SKILLS</dt>
+                <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noSkills}{skills && skills.map(skill => <span key={skill}>{skill} | </span>)}</dd>
 
-                <dt className="col-sm-12 col-md-3 col-lg-2 text-md-right">ORGANIZATION</dt>
-                <dd className="col-sm-12 col-md-9 col-lg-10 font-italic">| {organization} |</dd>
+                <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">ORGANIZATION</dt>
+                <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noOrganization}{organization} |</dd>
             
-                <dt className="col-sm-12 col-md-3 col-lg-2 text-md-right">INDUSTRY</dt>
-                <dd className="col-sm-12 col-md-9 col-lg-10 font-italic">| {industry} |</dd>
+                <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">INDUSTRY</dt>
+                <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noIndustry}{industry} |</dd>
             </dl>
+            </div>
+            </div>
+            <div className="text-center">
+                <a href={"/"}>
+                    <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2">New Search</Button>
+                </a>
             </div>
         </Container>
         </>
