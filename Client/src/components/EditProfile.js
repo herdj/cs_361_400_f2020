@@ -25,6 +25,10 @@ function EditProfile() {
     const [displayName, setDisplayName] = useState('');
     const [courseSubject, setCourseSubject] = useState('');
     const [courseNumber, setCourseNumber] = useState('');
+    const [gitHub, setGitHub] = useState('');
+    const [linkedIn, setLinkedIn] = useState('');
+    const [twitter, setTwitter] = useState('');
+    const [organization, setOrganization] = useState('');
     
     useEffect(() => {
         const getUserData = async () => {
@@ -93,6 +97,70 @@ function EditProfile() {
 
     const handleIndustryChange = (event) => {
         setIndustry(event.target.value);
+    }
+
+    const onChangeLinkedIn = async (event) => {
+        event.preventDefault();
+        await firestore.collection('users').doc(uid).update({
+            linkedIn: linkedIn
+        }).then(function() {
+            console.log("success for LinkedIn");
+        }).catch(function(error) {
+            console.error("Error updating document: ", error);
+        })
+        setLoadData(linkedIn);
+    }
+
+    const handleLinkedInChange = (event) => {
+        setLinkedIn(event.target.value);
+    }
+
+    const onChangeTwitter = async (event) => {
+        event.preventDefault();
+        await firestore.collection('users').doc(uid).update({
+            twitter: twitter
+        }).then(function() {
+            console.log("success for Twitter");
+        }).catch(function(error) {
+            console.error("Error updating document: ", error);
+        })
+        setLoadData(twitter);
+    }
+
+    const handleTwitterChange = (event) => {
+        setTwitter(event.target.value);
+    }
+
+    const onChangeGitHub = async (event) => {
+        event.preventDefault();
+        await firestore.collection('users').doc(uid).update({
+            gitHub: gitHub
+        }).then(function() {
+            console.log("success for GitHub");
+        }).catch(function(error) {
+            console.error("Error updating document: ", error);
+        })
+        setLoadData(gitHub);
+    }
+
+    const handleGitHubChange = (event) => {
+        setGitHub(event.target.value);
+    }
+
+    const onChangeOrganization = async (event) => {
+        event.preventDefault();
+        await firestore.collection('users').doc(uid).update({
+            organization: organization
+        }).then(function() {
+            console.log("success for organization");
+        }).catch(function(error) {
+            console.error("Error updating document: ", error);
+        })
+        setLoadData(organization);
+    }
+
+    const handleOrganizationChange = (event) => {
+        setOrganization(event.target.value);
     }
 
     const onChangeDisplayName = async (event) => {
@@ -223,6 +291,58 @@ function EditProfile() {
                     </Form.Label>
                     <Col sm="10">
                     <Form.Control type="text" value={displayName || ''} onChange={(e) => setDisplayName(e.target.value)} placeholder={userData !== "start" && userData.displayName !== undefined ? userData.displayName : ''} />
+                    </Col>
+                </Form.Group>
+                <Button variant="primary" type="submit">Submit</Button>
+            </Form>
+            </Tab>
+            <Tab eventKey="profiles" title="Profiles">
+                <h4>Current GitHub: {userData !== "start" && userData.linkedIn !== undefined ? userData.linkedIn : ''}</h4>
+                <h4>Current Twitter: {userData !== "start" && userData.gitHub !== undefined ? userData.gitHub : ''}</h4>
+                <h4>Current LinkedIn: {userData !== "start" && userData.twitter !== undefined ? userData.twitter : ''}</h4>
+            <Form onSubmit={onChangeLinkedIn}>
+                <Form.Group as={Row} controlId="formPlaintextPassword">
+                    <Form.Label column sm="2">
+                        Update LinkedIn
+                    </Form.Label>
+                    <Col sm="10">
+                    <Form.Control type="text" value={linkedIn || ''} onChange={(e) => setLinkedIn(e.target.value)} placeholder={userData !== "start" && userData.linkedIn !== undefined ? userData.linkedIn : ''} />
+                    </Col>
+                </Form.Group>
+                <Button variant="primary" type="submit">Submit</Button>
+            </Form>
+            <Form onSubmit={onChangeGitHub}>
+                <Form.Group as={Row} controlId="formPlaintextPassword">
+                    <Form.Label column sm="2">
+                        Update GitHub
+                    </Form.Label>
+                    <Col sm="10">
+                    <Form.Control type="text" value={gitHub || ''} onChange={(e) => setGitHub(e.target.value)} placeholder={userData !== "start" && userData.gitHub !== undefined ? userData.gitHub : ''} />
+                    </Col>
+                </Form.Group>
+                <Button variant="primary" type="submit">Submit</Button>
+            </Form>
+            <Form onSubmit={onChangeTwitter}>
+                <Form.Group as={Row} controlId="formPlaintextPassword">
+                    <Form.Label column sm="2">
+                        Update Display Name
+                    </Form.Label>
+                    <Col sm="10">
+                    <Form.Control type="text" value={twitter || ''} onChange={(e) => setTwitter(e.target.value)} placeholder={userData !== "start" && userData.twitter !== undefined ? userData.twitter : ''} />
+                    </Col>
+                </Form.Group>
+                <Button variant="primary" type="submit">Submit</Button>
+            </Form>
+            </Tab>
+            <Tab eventKey="Organization" title="Organization">
+                <h4>Current Organization: {userData !== "start" && userData.organization !== undefined ? userData.organization : ''}</h4>
+            <Form onSubmit={onChangeOrganization}>
+                <Form.Group as={Row} controlId="formPlaintextPassword">
+                    <Form.Label column sm="2">
+                        Update Organization
+                    </Form.Label>
+                    <Col sm="10">
+                    <Form.Control type="text" value={organization || ''} onChange={(e) => setOrganization(e.target.value)} placeholder={userData !== "start" && userData.organization !== undefined ? userData.organization : ''} />
                     </Col>
                 </Form.Group>
                 <Button variant="primary" type="submit">Submit</Button>
