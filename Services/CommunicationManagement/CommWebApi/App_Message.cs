@@ -10,15 +10,16 @@ namespace CommWebApi.Messages{
             user_name = first_name + " " + last_name;
             to = new MailAddress(email_addr);
             mail_message = new MailMessage(from, to);
-            mail_message.Subject = "Join us, expert!";
+            mail_message.Subject = "So " + first_name + ", we hear you are an expert.";
             mail_message.Body = Application_Body;
+            mail_message.IsBodyHtml = true;
             // DBWrapper Wrapper = new DBWrapper();
             // Wrapper.add_to_DB(first_name, last_name, email_addr);
             // Wrapper = null; 
             send_message();
         }
         private MailMessage mail_message {get; set;}
-        private static string Application_Body = "We hope you join us!";
+        private static string Application_Body = "<p>You've been invited to join our OSU expert finder. Show off your skills today!</p><p><a href='http://localhost:3000/invite-landing'>Join Us!</a></p>";
         private static string mail_server = "smtp.mailtrap.io";
         private static string mail_username = "03640829aff133";
         private static string mail_pw = "1f0c7652f271d8";
