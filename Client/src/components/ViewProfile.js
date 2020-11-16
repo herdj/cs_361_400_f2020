@@ -2,6 +2,8 @@ import React from 'react';
 import Popup from "./Popup";
 import GitHubUserInfo from "./GitHubUserInfo";
 import GitHubUserRepoInfo from "./GitHubUserRepoInfo";
+import GitHubUserGistInfo from "./GitHubUserGistInfo";
+import GitHubUserProjectInfo from "./GitHubUserProjectInfo";
 import { firestore } from '../firebase/firebase';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useParams } from 'react-router-dom';
@@ -72,6 +74,12 @@ function ProfileData(props) {
 
     const { displayName, courses, skills, photoURL, email, uid, organization, industry, gitHub, linkedIn, twitter } = props.data;
     const [loggedIn, setLoggedIn] = useState("start");
+
+/************************** POPUP - START *****************************/
+    
+    const [gitHubUser, setgitHubUser] = useState(""); // TODO - Pass GitHub username
+
+/**************************** POPUP - END *****************************/
     
     // Award Trophy to users with more than X courses
     let awardCourse;
@@ -128,7 +136,11 @@ function ProfileData(props) {
     // Resource used: https://www.youtube.com/watch?v=SmMZqh1xdB4
     const popupRef = React.useRef();
 
-    const openPopup= () => {
+    const openPopup= (gitHub) => {
+        console.log(gitHub);
+        setgitHubUser(gitHub);  // TODO - Pass GitHub username
+        console.log(gitHubUser);
+        //popupRef.current.getUser(gitHub); TODO - Pass GitHub username
         popupRef.current.openPopup();
     };
   
@@ -153,6 +165,10 @@ function ProfileData(props) {
         <GitHubUserInfo></GitHubUserInfo>
         <hr />
         <GitHubUserRepoInfo></GitHubUserRepoInfo>
+        <hr />
+        <GitHubUserGistInfo></GitHubUserGistInfo>
+        <hr />
+        <GitHubUserProjectInfo></GitHubUserProjectInfo>
 
         </Popup>
 {/*************************** POPUP - END ****************************/}
@@ -177,9 +193,9 @@ function ProfileData(props) {
                             <GrGithub className="mr-3 my-2" style={ICON_STYLES}/>
                         </a> <br />
                         <div className="pl-3">
-                          <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={openPopup}>
-                              GitHub Preview
-                          </Button>
+                            <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={ () => { openPopup(gitHub) } }>
+                                GitHub Preview
+                            </Button>
                         </div>
                     </span>
                 </Col>
