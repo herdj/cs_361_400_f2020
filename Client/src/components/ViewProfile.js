@@ -2,6 +2,8 @@ import React from 'react';
 import Popup from "./Popup";
 import GitHubUserInfo from "./GitHubUserInfo";
 import GitHubUserRepoInfo from "./GitHubUserRepoInfo";
+import GitHubUserGistInfo from "./GitHubUserGistInfo";
+import GitHubUserProjectInfo from "./GitHubUserProjectInfo";
 import { firestore } from '../firebase/firebase';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useParams } from 'react-router-dom';
@@ -153,6 +155,10 @@ function ProfileData(props) {
         <GitHubUserInfo></GitHubUserInfo>
         <hr />
         <GitHubUserRepoInfo></GitHubUserRepoInfo>
+        <hr />
+            <GitHubUserGistInfo></GitHubUserGistInfo>
+        <hr />
+            <GitHubUserProjectInfo></GitHubUserProjectInfo>
 
         </Popup>
 {/*************************** POPUP - END ****************************/}
