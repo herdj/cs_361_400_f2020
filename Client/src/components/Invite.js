@@ -52,11 +52,11 @@ function InviteExpert() {
     }
 
     return (
-        <Container fluid="md">
+        <Container className="mt-3">
             <h1>Invite an Expert</h1>
             { success === false && fail === false && (
-            <Row>
-                <Col xs="4">
+            <Row className="mt-6">
+                <Col md="4">
                     <Form onSubmit = {submit_handler}>
                         <Form.Group>
                             <Form.Control type="text" onChange={(e)=>setFirst_name(e.target.value)} placeholder="first name"/><br/>
