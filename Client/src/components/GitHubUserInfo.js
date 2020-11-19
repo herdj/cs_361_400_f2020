@@ -23,10 +23,20 @@ import gh_blog_icon from "../assets/images/icons/gh_blog.PNG";
     width: "23px"   
   }
 
-function GitHubUserInfo() {
+function GitHubUserInfo( {gitHubUser} ) { // TODO - Pass GitHub username
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState([]);
+    // const [user, setUser] = React.useState("octocat"); TODO - Pass GitHub username
+
+    // console.log("gitHubUserInfo...");  TODO - Pass GitHub username
+    // console.log(gitHubUser);
+
+    // Function for passing data        TODO - Pass GitHub username
+    //const getUser = (gitHub) => {
+    //  console.log(gitHub);
+    //  setUser(gitHub);
+    //};
 
     useEffect(() => {
       fetch("https://api.github.com/users/octocat")
@@ -81,14 +91,14 @@ function GitHubUserInfo() {
             : "" }
             <Row className="mb-2">
                 <Col className="text-center">
-                    <Button href={data.html_url} target="_blank" size="sm" variant="outline-dark">
+                    <Button href={data.html_url} target="_blank" size="sm" variant="dark">
                         Visit Profile
                     </Button>
                 </Col>
             </Row>
             <Row className="justify-content-center">
                 <Col className="text-center">
-                    <img src={gh_followers_icon} alt="" style={ICON_STYLES_ALT} />
+                    <img src={gh_followers_icon} alt="" className="mb-1" style={ICON_STYLES_ALT} />
                     <b> {data.followers}</b><span className="text-secondary"> followers</span>
                     <span> &#183; </span>
                     <b>{data.following}</b><span className="text-secondary"> following</span>
@@ -98,17 +108,17 @@ function GitHubUserInfo() {
                 <Col className="text-center">
                     { data.location !== null ?
                     <span className="mx-2">
-                        <img src={gh_location_icon} alt="" style={ICON_STYLES} /> {data.location}
+                        <img src={gh_location_icon} alt="" className="mb-1" style={ICON_STYLES} /> {data.location}
                     </span>
                     : "" }
                     { data.company !== null ?
                     <span className="mx-2">
-                        <img src={gh_company_icon} alt="" style={ICON_STYLES} /> {data.company}
+                        <img src={gh_company_icon} alt="" className="mb-1" style={ICON_STYLES} /> {data.company}
                     </span>
                     : "" }
                     { data.blog !== "" ?
                     <span className="mx-2">
-                        <img src={gh_blog_icon} alt="" style={ICON_STYLES} />
+                        <img src={gh_blog_icon} alt="" className="mb-1" style={ICON_STYLES} />
                         <a href={data.blog} target="_blank"> {data.blog} </a>
                     </span>
                     : "" }

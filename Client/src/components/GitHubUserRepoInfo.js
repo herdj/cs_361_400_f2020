@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
+import Badge from "react-bootstrap/Badge";
 import gh_star from "../assets/images/icons/gh_star.PNG";
 import gh_forks from "../assets/images/icons/gh_forks.PNG";
 
@@ -63,6 +64,7 @@ function GitHubUserRepoInfo() {
                         {data.map(repo => (
                             <ListGroup.Item key={repo.id}>
                                 <table>
+                                  <tbody>
                                     <tr>
                                         <td><a href={repo.html_url} target="_blank">{repo.name}</a></td>
                                     </tr>
@@ -72,16 +74,18 @@ function GitHubUserRepoInfo() {
                                     <tr>
                                         <td>
                                             { repo.language !== null ?
-                                                <span className="mr-2">{repo.language}</span>
+                                                <Badge className="mr-2" pill variant="warning">{repo.language}</Badge>
                                             : "" }
+                                              {/* (previously above) <span className="mr-2">{repo.language}</span> */}
                                             <span className="mr-2">
-                                                <img src={gh_star} alt="" style={ICON_STYLES} /> {repo.stargazers_count}
+                                                <img src={gh_star} alt="" className="mb-1" style={ICON_STYLES} /> {repo.stargazers_count}
                                             </span>
                                             <span className="mr-2">
-                                                <img src={gh_forks} alt="" style={ICON_STYLES} /> {repo.forks_count}
+                                                <img src={gh_forks} alt="" className="mb-1" style={ICON_STYLES} /> {repo.forks_count}
                                             </span>
                                         </td>
                                     </tr>
+                                  </tbody>
                                 </table>
                             </ListGroup.Item>
                         ))}
@@ -90,7 +94,7 @@ function GitHubUserRepoInfo() {
                 <Col></Col>
             </Row>
         :   <Row>
-                <Col className="text-center"><h6>This user has no public repositories.</h6></Col>
+                <Col className="text-center"><h6 className="mb-4">This user has no public repositories.</h6></Col>
             </Row> }
         </Container>
       )

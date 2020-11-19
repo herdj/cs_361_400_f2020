@@ -8,6 +8,7 @@ import Invite from './Invite';
 import Search from './Search';
 import ViewProfile from './ViewProfile';
 import PopupTest from './PopupTest';
+import InviteLanding from "./InviteLanding";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/search" exact component={Search} />
           <Route path="/popup-test" exact component={PopupTest} />
           <Route path="/view-profile/:id" exact component={ViewProfile} />
+          <Route path="/invite-landing" exact component={InviteLanding} />
       </div>
     </Router>
   );

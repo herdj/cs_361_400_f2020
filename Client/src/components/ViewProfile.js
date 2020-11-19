@@ -2,6 +2,8 @@ import React from 'react';
 import Popup from "./Popup";
 import GitHubUserInfo from "./GitHubUserInfo";
 import GitHubUserRepoInfo from "./GitHubUserRepoInfo";
+import GitHubUserGistInfo from "./GitHubUserGistInfo";
+import GitHubUserProjectInfo from "./GitHubUserProjectInfo";
 import { firestore } from '../firebase/firebase';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useParams } from 'react-router-dom';
@@ -29,6 +31,32 @@ const ICON_STYLES_LINK = {
     color: "inherit"
 }
 
+//Global Variable for building course links to OSU website.
+let courseSearchURL =[];
+
+//Builds a list of URL strings in 'courseSearchURL' from courses listed on a Profile. 
+function BuildCourseLink(array) {
+    //ForEach course entry, separate letters/numbers/characters using ASCII
+    array.forEach(entry => {
+        var upperEntry = entry.toUpperCase();
+        var tempLetter = "";
+        var tempNumber = "";
+        for (let i = 0; i < upperEntry.length; i++) {
+            if (upperEntry.charCodeAt(i) >= 65 && upperEntry.charCodeAt(i) <= 90){
+                // Character at i is a letter. Append to tempLetter.
+                tempLetter = tempLetter+upperEntry[i];
+            } else if (upperEntry.charCodeAt(i) >= 48 && upperEntry.charCodeAt(i) <= 57) {
+                // Character at i is a number.  Append to tempNumber.
+                tempNumber = tempNumber+upperEntry[i];
+            }
+        }
+        // Create search URL for Course
+        var tempURL = "https://catalog.oregonstate.edu/search/?search="+tempLetter+"+"+tempNumber;
+        // Create Key:Value pair using original course string (entry) and newly created courseURL (tempURL).
+        courseSearchURL[entry] = tempURL;
+    });
+}
+
 function ViewProfile() {
 
     let { id } = useParams();
@@ -46,6 +74,12 @@ function ProfileData(props) {
 
     const { displayName, courses, skills, photoURL, email, uid, organization, industry, gitHub, linkedIn, twitter } = props.data;
     const [loggedIn, setLoggedIn] = useState("start");
+
+/************************** POPUP - START *****************************/
+    
+    const [gitHubUser, setgitHubUser] = useState(""); // TODO - Pass GitHub username
+
+/**************************** POPUP - END *****************************/
     
     // Award Trophy to users with more than X courses
     let awardCourse;
@@ -53,6 +87,9 @@ function ProfileData(props) {
         awardCourse =  <GrStar className="mb-2" style={ICON_STYLES}/>;
     }
     
+    // Build array of URL links from Profile courses array
+    BuildCourseLink(courses);
+
     // Award Trophy to users with more than X skills
     let awardSkills;
     if (skills.length >= 3) {
@@ -91,7 +128,6 @@ function ProfileData(props) {
         noIndustry = " No industry listed"
     }
 
-
 /************************** POPUP - START *****************************/
 
     // Note: This sets ref equal to popUpRef, which will put Popup 
@@ -100,7 +136,11 @@ function ProfileData(props) {
     // Resource used: https://www.youtube.com/watch?v=SmMZqh1xdB4
     const popupRef = React.useRef();
 
-    const openPopup= () => {
+    const openPopup= (gitHub) => {
+        console.log(gitHub);
+        setgitHubUser(gitHub);  // TODO - Pass GitHub username
+        console.log(gitHubUser);
+        //popupRef.current.getUser(gitHub); TODO - Pass GitHub username
         popupRef.current.openPopup();
     };
   
@@ -125,6 +165,10 @@ function ProfileData(props) {
         <GitHubUserInfo></GitHubUserInfo>
         <hr />
         <GitHubUserRepoInfo></GitHubUserRepoInfo>
+        <hr />
+        <GitHubUserGistInfo></GitHubUserGistInfo>
+        <hr />
+        <GitHubUserProjectInfo></GitHubUserProjectInfo>
 
         </Popup>
 {/*************************** POPUP - END ****************************/}
@@ -149,9 +193,9 @@ function ProfileData(props) {
                             <GrGithub className="mr-3 my-2" style={ICON_STYLES}/>
                         </a> <br />
                         <div className="pl-3">
-                          <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={openPopup}>
-                              GitHub Preview
-                          </Button>
+                            <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={ () => { openPopup(gitHub) } }>
+                                GitHub Preview
+                            </Button>
                         </div>
                     </span>
                 </Col>
@@ -161,7 +205,7 @@ function ProfileData(props) {
             <div className="text-capitalize col-auto" style={{color: '#343a40'}}>
             <dl className="row border rounded border-warning auto-x">
                 <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">{awardCourse}COURSES</dt>
-                <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noCourses}{courses && courses.map(course => <span key={course}>{course} | </span>)}</dd>
+                <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noCourses}{courses && courses.map(course => <span key={course}><a href={courseSearchURL[course]}>{course} </a> | </span>)}</dd>
 
                 <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">{awardSkills}SKILLS</dt>
                 <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noSkills}{skills && skills.map(skill => <span key={skill}>{skill} | </span>)}</dd>
