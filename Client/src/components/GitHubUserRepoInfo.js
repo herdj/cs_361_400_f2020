@@ -12,13 +12,13 @@ import gh_forks from "../assets/images/icons/gh_forks.PNG";
       width: "20px"
   }
 
-function GitHubUserRepoInfo() {
+function GitHubUserRepoInfo(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState([]);
 
     useEffect(() => {
-      fetch("https://api.github.com/users/octocat/repos")
+      fetch("https://api.github.com/users/" + props.data + "/repos")
         .then(res => res.json())                                      
         .then(
           (result) => {
