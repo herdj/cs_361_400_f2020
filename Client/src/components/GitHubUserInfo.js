@@ -23,23 +23,13 @@ import gh_blog_icon from "../assets/images/icons/gh_blog.PNG";
     width: "23px"   
   }
 
-function GitHubUserInfo( {gitHubUser} ) { // TODO - Pass GitHub username
+function GitHubUserInfo(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState([]);
-    // const [user, setUser] = React.useState("octocat"); TODO - Pass GitHub username
-
-    // console.log("gitHubUserInfo...");  TODO - Pass GitHub username
-    // console.log(gitHubUser);
-
-    // Function for passing data        TODO - Pass GitHub username
-    //const getUser = (gitHub) => {
-    //  console.log(gitHub);
-    //  setUser(gitHub);
-    //};
 
     useEffect(() => {
-      fetch("https://api.github.com/users/octocat")
+      fetch("https://api.github.com/users/" + props.data)
         .then(res => res.json())                                      
         .then(
           (result) => {
