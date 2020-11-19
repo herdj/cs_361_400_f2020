@@ -12,13 +12,13 @@ import gh_gists from "../assets/images/icons/gh_gists.PNG";
       width: "20px"
   }
 
-function GitHubUserGistInfo() {
+function GitHubUserGistInfo(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState([]);
 
     useEffect(() => {
-      fetch("https://api.github.com/users/octocat/gists")
+      fetch("https://api.github.com/users/" + props.data + "/gists")
         .then(res => res.json())                                      
         .then(
           (result) => {

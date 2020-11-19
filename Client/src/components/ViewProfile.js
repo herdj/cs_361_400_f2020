@@ -74,12 +74,6 @@ function ProfileData(props) {
 
     const { displayName, courses, skills, photoURL, email, uid, organization, industry, gitHub, linkedIn, twitter } = props.data;
     const [loggedIn, setLoggedIn] = useState("start");
-
-/************************** POPUP - START *****************************/
-    
-    const [gitHubUser, setgitHubUser] = useState(""); // TODO - Pass GitHub username
-
-/**************************** POPUP - END *****************************/
     
     // Award Trophy to users with more than X courses
     let awardCourse;
@@ -136,11 +130,8 @@ function ProfileData(props) {
     // Resource used: https://www.youtube.com/watch?v=SmMZqh1xdB4
     const popupRef = React.useRef();
 
-    const openPopup= (gitHub) => {
+    const openPopup= () => {
         console.log(gitHub);
-        setgitHubUser(gitHub);  // TODO - Pass GitHub username
-        console.log(gitHubUser);
-        //popupRef.current.getUser(gitHub); TODO - Pass GitHub username
         popupRef.current.openPopup();
     };
   
@@ -162,13 +153,13 @@ function ProfileData(props) {
         <>
         <Popup ref={popupRef}>
 
-        <GitHubUserInfo></GitHubUserInfo>
+        <GitHubUserInfo data={gitHub} />
         <hr />
-        <GitHubUserRepoInfo></GitHubUserRepoInfo>
+        <GitHubUserRepoInfo data={gitHub} />
         <hr />
-        <GitHubUserGistInfo></GitHubUserGistInfo>
+        <GitHubUserGistInfo data={gitHub} />
         <hr />
-        <GitHubUserProjectInfo></GitHubUserProjectInfo>
+        <GitHubUserProjectInfo data={gitHub} />
 
         </Popup>
 {/*************************** POPUP - END ****************************/}
@@ -193,7 +184,7 @@ function ProfileData(props) {
                             <GrGithub className="mr-3 my-2" style={ICON_STYLES}/>
                         </a> <br />
                         <div className="pl-3">
-                            <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={ () => { openPopup(gitHub) } }>
+                            <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={() => openPopup()}>
                                 GitHub Preview
                             </Button>
                         </div>
