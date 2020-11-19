@@ -62,24 +62,20 @@ function EditProfile() {
     }
 
     const deleteSkill = async (skill2) => {
-        console.log(skill2);
         const { uid } = auth.currentUser;
         await firestore.collection('users').doc(uid).update({
             skills: firebase.firestore.FieldValue.arrayRemove(skill2)
         });
-        setSkill(`${skill2} deleted`);
+        setSkill(skill2);
         setLoadData(skill);
     }
 
-   
-
     const deleteCourse = async (course2) => {
-        console.log(course2);
         const { uid } = auth.currentUser;
         await firestore.collection('users').doc(uid).update({
             courses: firebase.firestore.FieldValue.arrayRemove(course2)
         });
-        setCourse(`${course2} deleted`);
+        setCourse(course2);
         setLoadData(course);
     }
 
@@ -111,10 +107,6 @@ function EditProfile() {
         setLoadData(linkedIn);
     }
 
-    const handleLinkedInChange = (event) => {
-        setLinkedIn(event.target.value);
-    }
-
     const onChangeTwitter = async (event) => {
         event.preventDefault();
         await firestore.collection('users').doc(uid).update({
@@ -125,10 +117,6 @@ function EditProfile() {
             console.error("Error updating document: ", error);
         })
         setLoadData(twitter);
-    }
-
-    const handleTwitterChange = (event) => {
-        setTwitter(event.target.value);
     }
 
     const onChangeGitHub = async (event) => {
@@ -143,10 +131,6 @@ function EditProfile() {
         setLoadData(gitHub);
     }
 
-    const handleGitHubChange = (event) => {
-        setGitHub(event.target.value);
-    }
-
     const onChangeOrganization = async (event) => {
         event.preventDefault();
         await firestore.collection('users').doc(uid).update({
@@ -157,10 +141,6 @@ function EditProfile() {
             console.error("Error updating document: ", error);
         })
         setLoadData(organization);
-    }
-
-    const handleOrganizationChange = (event) => {
-        setOrganization(event.target.value);
     }
 
     const onChangeDisplayName = async (event) => {
@@ -200,10 +180,9 @@ function EditProfile() {
     function validateCourse(){
         let courseCode = courseNumber;
         let courseRGEX = /^[0-9]{3}$/i;
-        // let courseRGEX = /^[A-Z]{1,4}[_]{0,1}[-]{0,1}[ ]{0,1}[0-9]{3}$/i;
         let courseResult = courseRGEX.test(courseCode);
         if(courseResult === false) {
-          alert('Please enter a valid course number (examples: CS290, CS 290, CS_290, CS-290)');
+          alert('Please enter a valid course number with three numbers (examples: 290, 325, 361, 340)');
           return false;
         }
         return true;
