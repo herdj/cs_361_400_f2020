@@ -4,24 +4,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
-import Figure from "react-bootstrap/Figure";
-import FigureImage from "react-bootstrap/FigureImage";
 import Spinner from "react-bootstrap/Spinner";
-import gh_mark from "../assets/images/GitHub-Mark-120px-plus.png";
 import gh_followers_icon from "../assets/images/icons/gh_followers.PNG";
 import gh_location_icon from "../assets/images/icons/gh_location.PNG";
 import gh_company_icon from "../assets/images/icons/gh_company.PNG";
 import gh_blog_icon from "../assets/images/icons/gh_blog.PNG";
-
-  const ICON_STYLES = {
-      height: "20px",
-      width: "20px"
-  }
-
-  const ICON_STYLES_ALT = {
-    height: "23px",
-    width: "23px"   
-  }
+import ICON_STYLES from "../styles/IconStyles.js"
 
 function GitHubUserInfo(props) {
     const [error, setError] = useState(null);
@@ -88,7 +76,7 @@ function GitHubUserInfo(props) {
             </Row>
             <Row className="justify-content-center">
                 <Col className="text-center">
-                    <img src={gh_followers_icon} alt="" className="mb-1" style={ICON_STYLES_ALT} />
+                    <img src={gh_followers_icon} alt="" className="mb-1" style={ICON_STYLES.github_alt} />
                     <b> {data.followers}</b><span className="text-secondary"> followers</span>
                     <span> &#183; </span>
                     <b>{data.following}</b><span className="text-secondary"> following</span>
@@ -98,17 +86,17 @@ function GitHubUserInfo(props) {
                 <Col className="text-center">
                     { data.location !== null ?
                     <span className="mx-2">
-                        <img src={gh_location_icon} alt="" className="mb-1" style={ICON_STYLES} /> {data.location}
+                        <img src={gh_location_icon} alt="" className="mb-1" style={ICON_STYLES.github_main} /> {data.location}
                     </span>
                     : "" }
                     { data.company !== null ?
                     <span className="mx-2">
-                        <img src={gh_company_icon} alt="" className="mb-1" style={ICON_STYLES} /> {data.company}
+                        <img src={gh_company_icon} alt="" className="mb-1" style={ICON_STYLES.github_main} /> {data.company}
                     </span>
                     : "" }
                     { data.blog !== "" ?
                     <span className="mx-2">
-                        <img src={gh_blog_icon} alt="" className="mb-1" style={ICON_STYLES} />
+                        <img src={gh_blog_icon} alt="" className="mb-1" style={ICON_STYLES.github_main} />
                         <a href={data.blog} target="_blank"> {data.blog} </a>
                     </span>
                     : "" }
