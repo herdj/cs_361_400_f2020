@@ -74,12 +74,6 @@ function ProfileData(props) {
 
     const { displayName, courses, skills, photoURL, email, uid, organization, industry, gitHub, linkedIn, twitter } = props.data;
     const [loggedIn, setLoggedIn] = useState("start");
-
-/************************** POPUP - START *****************************/
-    
-    const [gitHubUser, setgitHubUser] = useState(""); // TODO - Pass GitHub username
-
-/**************************** POPUP - END *****************************/
     
     // Award Trophy to users with more than X courses
     let awardCourse;
@@ -128,23 +122,12 @@ function ProfileData(props) {
         noIndustry = " No industry listed"
     }
 
-/************************** POPUP - START *****************************/
-
-    // Note: This sets ref equal to popUpRef, which will put Popup 
-    // methods into popupRef. This gives us access to the openPopup() 
-    // and closePopup() via 'popupRef.current'.
-    // Resource used: https://www.youtube.com/watch?v=SmMZqh1xdB4
+    // Resource: https://www.youtube.com/watch?v=SmMZqh1xdB4
     const popupRef = React.useRef();
 
-    const openPopup= (gitHub) => {
-        console.log(gitHub);
-        setgitHubUser(gitHub);  // TODO - Pass GitHub username
-        console.log(gitHubUser);
-        //popupRef.current.getUser(gitHub); TODO - Pass GitHub username
+    const openPopupPreview = () => {
         popupRef.current.openPopup();
     };
-  
-/**************************** POPUP - END *****************************/
 
     if (loggedIn === "start") {
         auth.onAuthStateChanged(function(user) {
@@ -158,20 +141,18 @@ function ProfileData(props) {
 
     return (
 
-/************************** POPUP - START *****************************/
         <>
         <Popup ref={popupRef}>
 
-        <GitHubUserInfo></GitHubUserInfo>
+        <GitHubUserInfo data={gitHub} />
         <hr />
-        <GitHubUserRepoInfo></GitHubUserRepoInfo>
+        <GitHubUserRepoInfo data={gitHub} />
         <hr />
-        <GitHubUserGistInfo></GitHubUserGistInfo>
+        <GitHubUserGistInfo data={gitHub} />
         <hr />
-        <GitHubUserProjectInfo></GitHubUserProjectInfo>
+        <GitHubUserProjectInfo data={gitHub} />
 
         </Popup>
-{/*************************** POPUP - END ****************************/}
         
         <Container className="mt-5">
             <Row className="justify-content-center pb-2">
@@ -193,7 +174,7 @@ function ProfileData(props) {
                             <GrGithub className="mr-3 my-2" style={ICON_STYLES}/>
                         </a> <br />
                         <div className="pl-3">
-                            <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={ () => { openPopup(gitHub) } }>
+                            <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={() => openPopupPreview()}>
                                 GitHub Preview
                             </Button>
                         </div>

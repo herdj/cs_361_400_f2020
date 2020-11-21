@@ -6,19 +6,15 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Badge from "react-bootstrap/Badge";
 import gh_comments from "../assets/images/icons/gh_comments.PNG";
 import gh_gists from "../assets/images/icons/gh_gists.PNG";
+import ICON_STYLES from "../styles/IconStyles.js"
 
-  const ICON_STYLES = {
-      height: "20px",
-      width: "20px"
-  }
-
-function GitHubUserGistInfo() {
+function GitHubUserGistInfo(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState([]);
 
     useEffect(() => {
-      fetch("https://api.github.com/users/octocat/gists")
+      fetch("https://api.github.com/users/" + props.data + "/gists")
         .then(res => res.json())                                      
         .then(
           (result) => {
@@ -69,7 +65,7 @@ function GitHubUserGistInfo() {
                                           <td><a href={gist.html_url} target="_blank" rel="noopener noreferrer">View Gist</a></td>
                                       </tr>
                                       <tr>
-                                        <td><img src={gh_gists} alt="" className="mb-1 mr-1" style={ICON_STYLES} />Files:
+                                        <td><img src={gh_gists} alt="" className="mb-1 mr-1" style={ICON_STYLES.github_main} />Files:
                                           <ul className="list-unstyled ml-2 mb-0">
                                             {
                                             Object.keys(gist.files).map( (file, index) => ( 
@@ -87,7 +83,7 @@ function GitHubUserGistInfo() {
                                       <tr>
                                           <td>
                                             <span className="mr-2">
-                                              <img src={gh_comments} alt="" className="mb-1" style={ICON_STYLES} /> {gist.comments}
+                                              <img src={gh_comments} alt="" className="mb-1" style={ICON_STYLES.github_alt} /> {gist.comments}
                                             </span>
                                           </td>
                                       </tr>
