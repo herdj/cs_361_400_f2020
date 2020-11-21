@@ -6,11 +6,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Badge from "react-bootstrap/Badge";
 import gh_star from "../assets/images/icons/gh_star.PNG";
 import gh_forks from "../assets/images/icons/gh_forks.PNG";
-
-  const ICON_STYLES = {
-      height: "20px",
-      width: "20px"
-  }
+import ICON_STYLES from "../styles/IconStyles.js"
 
 function GitHubUserRepoInfo(props) {
     const [error, setError] = useState(null);
@@ -78,10 +74,10 @@ function GitHubUserRepoInfo(props) {
                                             : "" }
                                               {/* (previously above) <span className="mr-2">{repo.language}</span> */}
                                             <span className="mr-2">
-                                                <img src={gh_star} alt="" className="mb-1" style={ICON_STYLES} /> {repo.stargazers_count}
+                                                <img src={gh_star} alt="" className="mb-1" style={ICON_STYLES.github_main} /> {repo.stargazers_count}
                                             </span>
                                             <span className="mr-2">
-                                                <img src={gh_forks} alt="" className="mb-1" style={ICON_STYLES} /> {repo.forks_count}
+                                                <img src={gh_forks} alt="" className="mb-1" style={ICON_STYLES.github_main} /> {repo.forks_count}
                                             </span>
                                         </td>
                                     </tr>
