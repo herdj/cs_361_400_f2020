@@ -1,7 +1,6 @@
 using System;
 using System.Net;
 using System.Net.Mail;
-using CommWebApi.DBWrappers;
 
 namespace CommWebApi.Messages{
 
@@ -13,9 +12,6 @@ namespace CommWebApi.Messages{
             mail_message.Subject = "So " + first_name + ", we hear you are an expert.";
             mail_message.Body = Application_Body;
             mail_message.IsBodyHtml = true;
-            // DBWrapper Wrapper = new DBWrapper();
-            // Wrapper.add_to_DB(first_name, last_name, email_addr);
-            // Wrapper = null; 
             send_message();
         }
         private MailMessage mail_message {get; set;}
