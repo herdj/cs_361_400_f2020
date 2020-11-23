@@ -31,6 +31,68 @@ const ICON_STYLES_LINK = {
     color: "inherit"
 }
 
+let awardSkills;
+let awardCourse;
+
+let noCourses;
+let noSkills;
+let noOrganization;
+let noIndustry;
+
+const trophyIcon = <GrStar className="mb-2" style={ICON_STYLES}/>;
+const courseTrophyMinimum = 4; //The minimum courses reequired to be awarded a trophy
+const skillTrophyMinimum = 3;  //The minimum skills required to be awarded a trophy
+
+
+// Award Trophy to users with more than courseTrophyMinimums
+function CourseAward(category) {
+    if (category.length >= courseTrophyMinimum) {
+        awardCourse = trophyIcon;
+    }
+}
+
+// Award Trophy to users with more than skillsTrophyMinimums
+function SkillsAward(category) {
+    if (category.length >= skillTrophyMinimum) {
+        awardSkills = trophyIcon;
+    }
+}
+
+// Display Courses placeholder text when no skills are listed in user profile.
+function VerifyCourses(category) {
+    if (category.length == 0) {
+        noCourses = " No courses listed |"
+    }
+}
+
+// Display Skills placeholder text when no skills are listed in user profile.
+function VerifySkills(category) {
+    if (category.length == 0) {
+        noSkills = " No skills listed |"
+    }
+}
+
+// Display Organization placeholder text when no organization is listed in user profile.
+function VerifyOrganization(category) {
+    // Test if database contains 'organization' criteria.
+    if (typeof(category) == 'undefined') {
+        noOrganization = " No organization listed"
+    } else if (category == "") {    
+        noOrganization = " No organization listed"
+    }
+}
+
+// Display Industry placeholder text when no industry is listed in user profile.
+function VerifyIndustry(category) {
+    // Test if database contains 'industry' criteria.
+    if (typeof(category) == 'undefined') {
+        noIndustry = " No industry listed"
+    } else if (category == "") {
+        noIndustry = " No industry listed"
+    }
+}
+
+
 //Global Variable for building course links to OSU website.
 let courseSearchURL =[];
 
@@ -75,52 +137,16 @@ function ProfileData(props) {
     const { displayName, courses, skills, photoURL, email, uid, organization, industry, gitHub, linkedIn, twitter } = props.data;
     const [loggedIn, setLoggedIn] = useState("start");
     
-    // Award Trophy to users with more than X courses
-    let awardCourse;
-    if (courses.length > 3) {
-        awardCourse =  <GrStar className="mb-2" style={ICON_STYLES}/>;
-    }
+    // />;
     
-    // Build array of URL links from Profile courses array
     BuildCourseLink(courses);
+    CourseAward(courses);
+    SkillsAward(skills);
 
-    // Award Trophy to users with more than X skills
-    let awardSkills;
-    if (skills.length >= 3) {
-        awardSkills = <GrStar className="mb-2" style={ICON_STYLES}/>;
-    }
-
-    // Display string placeholder when no courses are listed in user profile
-    let noCourses;
-    if (courses.length == 0) {
-        noCourses = " No courses listed |"
-    }
-
-    // Display string placeholder when no skills are listed in user profile
-    let noSkills;
-    if (skills.length == 0) {
-        noSkills = " No skills listed |"
-    }
-
-    // Display Skills placeholder text when no skills are listed in user profile.
-    // Test if database contains 'organization' criteria.
-    // Test else if 'organization' is listed as empty String. 
-    let noOrganization;
-    if (typeof(organization) == 'undefined') {
-        noOrganization = " No organization listed"
-    } else if (organization == "") {    
-        noOrganization = " No organization listed"
-    }
-
-    // Display Industry placeholder text when no industry is listed in user profile.
-    // Test if database contains 'industry' criteria.
-    // Test else if 'industry' is listed as empty String.
-    let noIndustry;
-    if (typeof(industry) == 'undefined') {
-        noIndustry = " No industry listed"
-    } else if (industry == "") {
-        noIndustry = " No industry listed"
-    }
+    VerifyCourses(courses);
+    VerifySkills(skills);
+    VerifyOrganization(organization);
+    VerifyIndustry(industry);
 
     // Resource: https://www.youtube.com/watch?v=SmMZqh1xdB4
     const popupRef = React.useRef();
