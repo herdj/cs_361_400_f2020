@@ -97,7 +97,7 @@ function GitHubUserInfo(props) {
                     { data.blog !== "" ?
                     <span className="mx-2">
                         <img src={gh_blog_icon} alt="" className="mb-1" style={ICON_STYLES.github_main} />
-                        <a href={data.blog} target="_blank"> {data.blog} </a>
+                        <a href={data.blog} target="_blank" rel="noopener noreferrer"> {data.blog} </a>
                     </span>
                     : "" }
                 </Col>

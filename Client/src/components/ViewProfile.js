@@ -190,13 +190,13 @@ function ProfileData(props) {
                     <h1 className="mb-0 pb-0 pl-1">{displayName}</h1>
                     <span className="my-2 text-info">{email}</span><br />
                     <span className="pl-4">
-                        <a href={"https://www.linkedin.com/in/" + linkedIn}  target="_blank" style={ICON_STYLES_LINK}>
+                        <a href={"https://www.linkedin.com/in/" + linkedIn}  target="_blank" rel="noopener noreferrer" style={ICON_STYLES_LINK}>
                             <GrLinkedin className="mr-3 my-2" style={ICON_STYLES}/>
                         </a>
-                        <a href={"https://twitter.com/" + twitter}  target="_blank" style={ICON_STYLES_LINK}>
+                        <a href={"https://twitter.com/" + twitter}  target="_blank" rel="noopener noreferrer" style={ICON_STYLES_LINK}>
                             <GrTwitter className="mr-3 my-2" style={ICON_STYLES}/> 
                         </a>
-                        <a href={"https://github.com/" + gitHub}  target="_blank" style={ICON_STYLES_LINK}>
+                        <a href={"https://github.com/" + gitHub}  target="_blank" rel="noopener noreferrer" style={ICON_STYLES_LINK}>
                             <GrGithub className="mr-3 my-2" style={ICON_STYLES}/>
                         </a> <br />
                         <div className="pl-3">

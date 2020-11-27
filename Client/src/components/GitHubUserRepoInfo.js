@@ -62,7 +62,7 @@ function GitHubUserRepoInfo(props) {
                                 <table>
                                   <tbody>
                                     <tr>
-                                        <td><a href={repo.html_url} target="_blank">{repo.name}</a></td>
+                                        <td><a href={repo.html_url} target="_blank" rel="noopener noreferrer" >{repo.name}</a></td>
                                     </tr>
                                     <tr>
                                         <td>{repo.description}</td>
