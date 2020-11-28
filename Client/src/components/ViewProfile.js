@@ -209,8 +209,8 @@ function ProfileData(props) {
                 <Col xs={1} md={1}></Col>
             </Row>
             <div className="container-fluid col-8">
-            <div className="text-capitalize col-auto" style={{color: '#343a40'}}>
-            <dl className="row border rounded border-warning auto-x">
+            <div className="text-capitalize col-auto border rounded border-warning" style={{color: '#343a40'}}>
+            <dl className="row auto-x mb-0">
                 <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">{awardCourse}COURSES</dt>
                 <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noCourses}{courses && courses.map(course => <span key={course}><a href={courseSearchURL[course]}>{course} </a> | </span>)}</dd>
 
@@ -223,12 +223,19 @@ function ProfileData(props) {
                 <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">INDUSTRY</dt>
                 <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noIndustry}{industry} |</dd>
             </dl>
+                <div className="justify-content-center d-flex">
+                    <a href={"/"}>
+                        <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2">Endorse Expert</Button>
+                    </a>
+                </div>
             </div>
             </div>
-            <div className="text-center">
+            <div className="" className="w-75 d-flex mx-auto justify-content-center">
+                <div className="px-3">
                 <a href={"/"}>
                     <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2">New Search</Button>
                 </a>
+                </div>
             </div>
         </Container>
         </>
