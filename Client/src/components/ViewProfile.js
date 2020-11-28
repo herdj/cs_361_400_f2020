@@ -22,8 +22,8 @@ import { GrLinkedin } from 'react-icons/gr';
 import { GrStar } from 'react-icons/gr';
 
 const ICON_STYLES = {
-    height: "20px",
-    width: "20px",
+    height: "22px",
+    width: "22px",
     cursor: "pointer"
 }
 
@@ -201,28 +201,34 @@ function ProfileData(props) {
                 </Col>
                 <Col className="text-left font-italic pl-4" style={{color: '#343a40'}} xs={7} md={6}>
                     <h1 className="mb-0 pb-0 pl-1">{displayName}</h1>
-                    <span className="my-2 text-info">{email}</span><br />
-                    <span className="pl-4">
+                    <span className="my-2 text-info pl-3">{email}</span><br />
+                    <span className="pl-3">
+                        { linkedIn !== "" ? 
                         <a href={"https://www.linkedin.com/in/" + linkedIn}  target="_blank" rel="noopener noreferrer" style={ICON_STYLES_LINK}>
                             <GrLinkedin className="mr-3 my-2" style={ICON_STYLES}/>
                         </a>
+                        : "" }
+                        { twitter !== "" ?
                         <a href={"https://twitter.com/" + twitter}  target="_blank" rel="noopener noreferrer" style={ICON_STYLES_LINK}>
                             <GrTwitter className="mr-3 my-2" style={ICON_STYLES}/> 
                         </a>
+                        : "" }
+                        { gitHub !== "" ?
                         <a href={"https://github.com/" + gitHub}  target="_blank" rel="noopener noreferrer" style={ICON_STYLES_LINK}>
                             <GrGithub className="mr-3 my-2" style={ICON_STYLES}/>
-                        </a> <br />
-                        <div className="pl-3">
-                            <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={() => openPopupPreview()}>
+                        </a>
+                        : "" }
+                        { gitHub !== "" ?
+                            <Button variant="primary" size="sm" variant="outline-dark" className="py-0" onClick={() => openPopupPreview()}>
                                 GitHub Preview
                             </Button>
-                        </div>
+                        : "" }
                     </span>
                 </Col>
                 <Col xs={1} md={1}></Col>
             </Row>
             <div className="container-fluid col-8">
-            <div className="text-capitalize col-auto border rounded border-warning" style={{color: '#343a40'}}>
+            <div className="text-capitalize col-auto border rounded border-warning mt-2" style={{color: '#343a40'}}>
             <dl className="row auto-x mb-0">
                 <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">{awardCourse}COURSES</dt>
                 <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noCourses}{courses && courses.map(course => <span key={course}><a href={courseSearchURL[course]}>{course} </a> | </span>)}</dd>
