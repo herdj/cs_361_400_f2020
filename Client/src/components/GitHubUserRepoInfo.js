@@ -62,7 +62,7 @@ function GitHubUserRepoInfo(props) {
                                 <table>
                                   <tbody>
                                     <tr>
-                                        <td><a href={repo.html_url} target="_blank">{repo.name}</a></td>
+                                        <td><a href={repo.html_url} target="_blank" rel="noopener noreferrer" >{repo.name}</a></td>
                                     </tr>
                                     <tr>
                                         <td>{repo.description}</td>
@@ -72,7 +72,6 @@ function GitHubUserRepoInfo(props) {
                                             { repo.language !== null ?
                                                 <Badge className="mr-2" pill variant="warning">{repo.language}</Badge>
                                             : "" }
-                                              {/* (previously above) <span className="mr-2">{repo.language}</span> */}
                                             <span className="mr-2">
                                                 <img src={gh_star} alt="" className="mb-1" style={ICON_STYLES.github_main} /> {repo.stargazers_count}
                                             </span>
