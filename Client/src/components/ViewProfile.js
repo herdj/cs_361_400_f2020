@@ -92,6 +92,12 @@ function VerifyIndustry(category) {
     }
 }
 
+//Toggles the 'Endorse Expert' button off;
+//Conditions for Off; User not signed in || User viewing own profile.
+function endroseButtonOff() {
+    document.getElementById('endorseButton').style.display = 'none';
+}
+
 
 //Global Variable for building course links to OSU website.
 let courseSearchURL =[];
@@ -159,8 +165,15 @@ function ProfileData(props) {
         auth.onAuthStateChanged(function(user) {
             if (user) {
                 setLoggedIn("true");
+                var signedInUid = auth.currentUser['uid'];
+                if (signedInUid === uid) {
+                    //Signed In User is viewing own profile; Do not display Endorse Button
+                    endroseButtonOff();
+                };
             } else {
                 setLoggedIn("false");
+                //No User is signed in; Do no display Endorse Button
+                endroseButtonOff();
             }
         })
     }
@@ -209,8 +222,8 @@ function ProfileData(props) {
                 <Col xs={1} md={1}></Col>
             </Row>
             <div className="container-fluid col-8">
-            <div className="text-capitalize col-auto" style={{color: '#343a40'}}>
-            <dl className="row border rounded border-warning auto-x">
+            <div className="text-capitalize col-auto border rounded border-warning" style={{color: '#343a40'}}>
+            <dl className="row auto-x mb-0">
                 <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">{awardCourse}COURSES</dt>
                 <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noCourses}{courses && courses.map(course => <span key={course}><a href={courseSearchURL[course]}>{course} </a> | </span>)}</dd>
 
@@ -223,6 +236,11 @@ function ProfileData(props) {
                 <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">INDUSTRY</dt>
                 <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noIndustry}{industry} |</dd>
             </dl>
+                <div className="justify-content-center d-flex">
+                    <a href={"/"}>
+                        <Button  id="endorseButton" variant="primary" size="sm" variant="outline-dark" className="py-0 my-2">Endorse Expert</Button>
+                    </a>
+                </div>
             </div>
             </div>
             <div className="text-center">
