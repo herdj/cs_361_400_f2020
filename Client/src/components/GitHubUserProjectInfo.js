@@ -4,19 +4,15 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import gh_projects from "../assets/images/icons/gh_projects.PNG";
+import ICON_STYLES from "../styles/IconStyles.js"
 
-  const ICON_STYLES = {
-      height: "20px",
-      width: "20px"
-  }
-
-function GitHubUserProjectInfo() {
+function GitHubUserProjectInfo(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState([]);
 
     useEffect(() => {
-      fetch("https://api.github.com/users/octocat/projects",
+      fetch("https://api.github.com/users/" + props.data + "/projects",
         {
             headers: {
                 "Accept": "application/vnd.github.inertia-preview+json"
@@ -75,7 +71,7 @@ function GitHubUserProjectInfo() {
                                           <td>{repo.body}</td>
                                       </tr>
                                       <tr>
-                                          <td><img src={gh_projects} alt="" style={ICON_STYLES} /> {repo.state} </td>
+                                          <td><img src={gh_projects} alt="" style={ICON_STYLES.github_main} /> {repo.state} </td>
                                       </tr>
                                     </tbody>
                                 </table>

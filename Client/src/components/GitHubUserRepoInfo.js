@@ -6,19 +6,15 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Badge from "react-bootstrap/Badge";
 import gh_star from "../assets/images/icons/gh_star.PNG";
 import gh_forks from "../assets/images/icons/gh_forks.PNG";
+import ICON_STYLES from "../styles/IconStyles.js"
 
-  const ICON_STYLES = {
-      height: "20px",
-      width: "20px"
-  }
-
-function GitHubUserRepoInfo() {
+function GitHubUserRepoInfo(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState([]);
 
     useEffect(() => {
-      fetch("https://api.github.com/users/octocat/repos")
+      fetch("https://api.github.com/users/" + props.data + "/repos")
         .then(res => res.json())                                      
         .then(
           (result) => {
@@ -66,7 +62,7 @@ function GitHubUserRepoInfo() {
                                 <table>
                                   <tbody>
                                     <tr>
-                                        <td><a href={repo.html_url} target="_blank">{repo.name}</a></td>
+                                        <td><a href={repo.html_url} target="_blank" rel="noopener noreferrer" >{repo.name}</a></td>
                                     </tr>
                                     <tr>
                                         <td>{repo.description}</td>
@@ -76,12 +72,11 @@ function GitHubUserRepoInfo() {
                                             { repo.language !== null ?
                                                 <Badge className="mr-2" pill variant="warning">{repo.language}</Badge>
                                             : "" }
-                                              {/* (previously above) <span className="mr-2">{repo.language}</span> */}
                                             <span className="mr-2">
-                                                <img src={gh_star} alt="" className="mb-1" style={ICON_STYLES} /> {repo.stargazers_count}
+                                                <img src={gh_star} alt="" className="mb-1" style={ICON_STYLES.github_main} /> {repo.stargazers_count}
                                             </span>
                                             <span className="mr-2">
-                                                <img src={gh_forks} alt="" className="mb-1" style={ICON_STYLES} /> {repo.forks_count}
+                                                <img src={gh_forks} alt="" className="mb-1" style={ICON_STYLES.github_main} /> {repo.forks_count}
                                             </span>
                                         </td>
                                     </tr>

@@ -22,14 +22,82 @@ import { GrLinkedin } from 'react-icons/gr';
 import { GrStar } from 'react-icons/gr';
 
 const ICON_STYLES = {
-    height: "20px",
-    width: "20px",
+    height: "22px",
+    width: "22px",
     cursor: "pointer"
 }
 
 const ICON_STYLES_LINK = {
     color: "inherit"
 }
+
+let awardSkills;
+let awardCourse;
+
+let noCourses;
+let noSkills;
+let noOrganization;
+let noIndustry;
+
+const trophyIcon = <GrStar className="mb-2" style={ICON_STYLES}/>;
+const courseTrophyMinimum = 4; //The minimum courses reequired to be awarded a trophy
+const skillTrophyMinimum = 3;  //The minimum skills required to be awarded a trophy
+
+
+// Award Trophy to users with more than courseTrophyMinimums
+function CourseAward(category) {
+    if (category.length >= courseTrophyMinimum) {
+        awardCourse = trophyIcon;
+    }
+}
+
+// Award Trophy to users with more than skillsTrophyMinimums
+function SkillsAward(category) {
+    if (category.length >= skillTrophyMinimum) {
+        awardSkills = trophyIcon;
+    }
+}
+
+// Display Courses placeholder text when no skills are listed in user profile.
+function VerifyCourses(category) {
+    if (category.length === 0) {
+        noCourses = " No courses listed |"
+    }
+}
+
+// Display Skills placeholder text when no skills are listed in user profile.
+function VerifySkills(category) {
+    if (category.length === 0) {
+        noSkills = " No skills listed |"
+    }
+}
+
+// Display Organization placeholder text when no organization is listed in user profile.
+function VerifyOrganization(category) {
+    // Test if database contains 'organization' criteria.
+    if (typeof(category) === 'undefined') {
+        noOrganization = " No organization listed"
+    } else if (category === "") {    
+        noOrganization = " No organization listed"
+    }
+}
+
+// Display Industry placeholder text when no industry is listed in user profile.
+function VerifyIndustry(category) {
+    // Test if database contains 'industry' criteria.
+    if (typeof(category) === 'undefined') {
+        noIndustry = " No industry listed"
+    } else if (category === "") {
+        noIndustry = " No industry listed"
+    }
+}
+
+//Toggles the 'Endorse Expert' button off;
+//Conditions for Off; User not signed in || User viewing own profile.
+function endorseButtonOff() {
+    document.getElementById('endorseButton').style.display = 'none';
+}
+
 
 //Global Variable for building course links to OSU website.
 let courseSearchURL =[];
@@ -74,104 +142,56 @@ function ProfileData(props) {
 
     const { displayName, courses, skills, photoURL, email, uid, organization, industry, gitHub, linkedIn, twitter } = props.data;
     const [loggedIn, setLoggedIn] = useState("start");
-
-/************************** POPUP - START *****************************/
     
-    const [gitHubUser, setgitHubUser] = useState(""); // TODO - Pass GitHub username
-
-/**************************** POPUP - END *****************************/
+    // />;
     
-    // Award Trophy to users with more than X courses
-    let awardCourse;
-    if (courses.length > 3) {
-        awardCourse =  <GrStar className="mb-2" style={ICON_STYLES}/>;
-    }
-    
-    // Build array of URL links from Profile courses array
     BuildCourseLink(courses);
+    CourseAward(courses);
+    SkillsAward(skills);
 
-    // Award Trophy to users with more than X skills
-    let awardSkills;
-    if (skills.length >= 3) {
-        awardSkills = <GrStar className="mb-2" style={ICON_STYLES}/>;
-    }
+    VerifyCourses(courses);
+    VerifySkills(skills);
+    VerifyOrganization(organization);
+    VerifyIndustry(industry);
 
-    // Display string placeholder when no courses are listed in user profile
-    let noCourses;
-    if (courses.length == 0) {
-        noCourses = " No courses listed |"
-    }
-
-    // Display string placeholder when no skills are listed in user profile
-    let noSkills;
-    if (skills.length == 0) {
-        noSkills = " No skills listed |"
-    }
-
-    // Display Skills placeholder text when no skills are listed in user profile.
-    // Test if database contains 'organization' criteria.
-    // Test else if 'organization' is listed as empty String. 
-    let noOrganization;
-    if (typeof(organization) == 'undefined') {
-        noOrganization = " No organization listed"
-    } else if (organization == "") {    
-        noOrganization = " No organization listed"
-    }
-
-    // Display Industry placeholder text when no industry is listed in user profile.
-    // Test if database contains 'industry' criteria.
-    // Test else if 'industry' is listed as empty String.
-    let noIndustry;
-    if (typeof(industry) == 'undefined') {
-        noIndustry = " No industry listed"
-    } else if (industry == "") {
-        noIndustry = " No industry listed"
-    }
-
-/************************** POPUP - START *****************************/
-
-    // Note: This sets ref equal to popUpRef, which will put Popup 
-    // methods into popupRef. This gives us access to the openPopup() 
-    // and closePopup() via 'popupRef.current'.
-    // Resource used: https://www.youtube.com/watch?v=SmMZqh1xdB4
+    // Resource: https://www.youtube.com/watch?v=SmMZqh1xdB4
     const popupRef = React.useRef();
 
-    const openPopup= (gitHub) => {
-        console.log(gitHub);
-        setgitHubUser(gitHub);  // TODO - Pass GitHub username
-        console.log(gitHubUser);
-        //popupRef.current.getUser(gitHub); TODO - Pass GitHub username
+    const openPopupPreview = () => {
         popupRef.current.openPopup();
     };
-  
-/**************************** POPUP - END *****************************/
 
     if (loggedIn === "start") {
         auth.onAuthStateChanged(function(user) {
             if (user) {
                 setLoggedIn("true");
+                var signedInUid = auth.currentUser['uid'];
+                if (signedInUid === uid) {
+                    //Signed In User is viewing own profile; Do not display Endorse Button
+                    endorseButtonOff();
+                };
             } else {
                 setLoggedIn("false");
+                //No User is signed in; Do no display Endorse Button
+                endorseButtonOff();
             }
         })
     }
 
     return (
 
-/************************** POPUP - START *****************************/
         <>
         <Popup ref={popupRef}>
 
-        <GitHubUserInfo></GitHubUserInfo>
+        <GitHubUserInfo data={gitHub} />
         <hr />
-        <GitHubUserRepoInfo></GitHubUserRepoInfo>
+        <GitHubUserRepoInfo data={gitHub} />
         <hr />
-        <GitHubUserGistInfo></GitHubUserGistInfo>
+        <GitHubUserGistInfo data={gitHub} />
         <hr />
-        <GitHubUserProjectInfo></GitHubUserProjectInfo>
+        <GitHubUserProjectInfo data={gitHub} />
 
         </Popup>
-{/*************************** POPUP - END ****************************/}
         
         <Container className="mt-5">
             <Row className="justify-content-center pb-2">
@@ -181,29 +201,35 @@ function ProfileData(props) {
                 </Col>
                 <Col className="text-left font-italic pl-4" style={{color: '#343a40'}} xs={7} md={6}>
                     <h1 className="mb-0 pb-0 pl-1">{displayName}</h1>
-                    <span className="my-2 text-info">{email}</span><br />
-                    <span className="pl-4">
-                        <a href={"https://www.linkedin.com/in/" + linkedIn}  target="_blank" style={ICON_STYLES_LINK}>
+                    <span className="my-2 text-info pl-3">{email}</span><br />
+                    <span className="pl-3">
+                        { linkedIn !== "" ? 
+                        <a href={"https://www.linkedin.com/in/" + linkedIn}  target="_blank" rel="noopener noreferrer" style={ICON_STYLES_LINK}>
                             <GrLinkedin className="mr-3 my-2" style={ICON_STYLES}/>
                         </a>
-                        <a href={"https://twitter.com/" + twitter}  target="_blank" style={ICON_STYLES_LINK}>
+                        : "" }
+                        { twitter !== "" ?
+                        <a href={"https://twitter.com/" + twitter}  target="_blank" rel="noopener noreferrer" style={ICON_STYLES_LINK}>
                             <GrTwitter className="mr-3 my-2" style={ICON_STYLES}/> 
                         </a>
-                        <a href={"https://github.com/" + gitHub}  target="_blank" style={ICON_STYLES_LINK}>
+                        : "" }
+                        { gitHub !== "" ?
+                        <a href={"https://github.com/" + gitHub}  target="_blank" rel="noopener noreferrer" style={ICON_STYLES_LINK}>
                             <GrGithub className="mr-3 my-2" style={ICON_STYLES}/>
-                        </a> <br />
-                        <div className="pl-3">
-                            <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" onClick={ () => { openPopup(gitHub) } }>
+                        </a>
+                        : "" }
+                        { gitHub !== "" ?
+                            <Button variant="primary" size="sm" variant="outline-dark" className="py-0" onClick={() => openPopupPreview()}>
                                 GitHub Preview
                             </Button>
-                        </div>
+                        : "" }
                     </span>
                 </Col>
                 <Col xs={1} md={1}></Col>
             </Row>
             <div className="container-fluid col-8">
-            <div className="text-capitalize col-auto" style={{color: '#343a40'}}>
-            <dl className="row border rounded border-warning auto-x">
+            <div className="text-capitalize col-auto border rounded border-warning mt-2" style={{color: '#343a40'}}>
+            <dl className="row auto-x mb-0">
                 <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">{awardCourse}COURSES</dt>
                 <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noCourses}{courses && courses.map(course => <span key={course}><a href={courseSearchURL[course]}>{course} </a> | </span>)}</dd>
 
@@ -216,6 +242,11 @@ function ProfileData(props) {
                 <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right">INDUSTRY</dt>
                 <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">| {noIndustry}{industry} |</dd>
             </dl>
+                <div className="justify-content-center d-flex">
+                    <a href={"/"}>
+                        <Button  id="endorseButton" variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" href={`/endorse/${uid}`}>Endorse Expert</Button>
+                    </a>
+                </div>
             </div>
             </div>
             <div className="text-center">
