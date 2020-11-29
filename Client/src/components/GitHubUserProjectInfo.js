@@ -4,11 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import gh_projects from "../assets/images/icons/gh_projects.PNG";
-
-  const ICON_STYLES = {
-      height: "20px",
-      width: "20px"
-  }
+import ICON_STYLES from "../styles/IconStyles.js"
 
 function GitHubUserProjectInfo(props) {
     const [error, setError] = useState(null);
@@ -75,7 +71,7 @@ function GitHubUserProjectInfo(props) {
                                           <td>{repo.body}</td>
                                       </tr>
                                       <tr>
-                                          <td><img src={gh_projects} alt="" style={ICON_STYLES} /> {repo.state} </td>
+                                          <td><img src={gh_projects} alt="" style={ICON_STYLES.github_main} /> {repo.state} </td>
                                       </tr>
                                     </tbody>
                                 </table>
