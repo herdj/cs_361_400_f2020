@@ -210,6 +210,7 @@ function EditProfile() {
                         <h3 className="pt-2" >{userData === "start" ? "Sign in to view profile" : userData.displayName}</h3>
                     </div>
                 </div>
+                <Button href="/endorsements">View Endorsements</Button>
             <Tabs className="pt-4" defaultActiveKey="skills" id="uncontrolled-tab-example">
             <Tab eventKey="skills" title="Skills">
                             <div>

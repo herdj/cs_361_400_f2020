@@ -244,7 +244,7 @@ function ProfileData(props) {
             </dl>
                 <div className="justify-content-center d-flex">
                     <a href={"/"}>
-                        <Button  id="endorseButton" variant="primary" size="sm" variant="outline-dark" className="py-0 my-2">Endorse Expert</Button>
+                        <Button  id="endorseButton" variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" href={`/endorse/${uid}`}>Endorse Expert</Button>
                     </a>
                 </div>
             </div>
