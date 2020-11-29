@@ -3,14 +3,34 @@ import { firestore, auth } from '../firebase/firebase';
 import { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import Container from 'react-bootstrap/Container';
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 import { BsPlusCircleFill } from 'react-icons/bs';
 import { FaTrashAlt } from 'react-icons/fa';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+/* React Icons */
+import { GrGithub } from 'react-icons/gr';
+import { GrTwitter } from 'react-icons/gr';
+import { GrLinkedin } from 'react-icons/gr';
+import { GrStar } from 'react-icons/gr';
+/* React Bootstrap Components */
+import Image from "react-bootstrap/Image";
+import Alert from 'react-bootstrap/Alert';
+
+const ICON_STYLES = {
+    height: "20px",
+    width: "20px",
+    cursor: "pointer"
+}
+
+const ICON_STYLES_LINK = {
+    color: "inherit"
+}
+
+const trophyIcon = <GrStar className="mb-2" style={ICON_STYLES}/>;
 
 
 function EditProfile() {
@@ -29,11 +49,14 @@ function EditProfile() {
     const [linkedIn, setLinkedIn] = useState('');
     const [twitter, setTwitter] = useState('');
     const [organization, setOrganization] = useState('');
+    const [alert, setAlert] = useState('false');
+    const [photoURL, setPhotoURL] = useState('');
     
     useEffect(() => {
         const getUserData = async () => {
             if (auth.currentUser != null) {
-                const { uid } = auth.currentUser;
+                const { uid, photoURLUpdate } = auth.currentUser;
+                setPhotoURL(photoURLUpdate);
                 await firestore.collection('users').doc(uid).get().then(function(doc) {
                     setUserData(doc.data());
                 }).catch(function(error) {
@@ -89,6 +112,8 @@ function EditProfile() {
             console.error("Error updating document: ", error);
         })
         setLoadData(industry);
+        setAlert('true');
+        myTimer();
     }
 
     const handleIndustryChange = (event) => {
@@ -105,6 +130,8 @@ function EditProfile() {
             console.error("Error updating document: ", error);
         })
         setLoadData(linkedIn);
+        setAlert('true');
+        myTimer();
     }
 
     const onChangeTwitter = async (event) => {
@@ -117,6 +144,8 @@ function EditProfile() {
             console.error("Error updating document: ", error);
         })
         setLoadData(twitter);
+        setAlert('true');
+        myTimer();
     }
 
     const onChangeGitHub = async (event) => {
@@ -129,6 +158,8 @@ function EditProfile() {
             console.error("Error updating document: ", error);
         })
         setLoadData(gitHub);
+        setAlert('true');
+        myTimer();
     }
 
     const onChangeOrganization = async (event) => {
@@ -141,6 +172,8 @@ function EditProfile() {
             console.error("Error updating document: ", error);
         })
         setLoadData(organization);
+        setAlert('true');
+        myTimer();
     }
 
     const onChangeDisplayName = async (event) => {
@@ -176,6 +209,21 @@ function EditProfile() {
         setLoadData(combineCourse);
     }
 
+    const onSubmitPhoto = async (event) => {
+        event.preventDefault();
+        await firestore.collection('users').doc(uid).update({
+            photoURL: photoURL
+        }).then(function() {
+            console.log("success updating photo");
+
+        }).catch(function(error) {
+            console.error("Error updating document: ", error);
+        })
+        setLoadData(photoURL);
+        setAlert('true');
+        myTimer();
+    }
+
 
     function validateCourse(){
         let courseCode = courseNumber;
@@ -188,13 +236,18 @@ function EditProfile() {
         return true;
       }
 
+    const myTimer = () => {
+        setTimeout(function() {setAlert('false');}, 3000);
+    }
+
     if (loggedIn === "start"){
         auth.onAuthStateChanged(function(user) {
             if(user) {
                 setLoggedIn("true");
                 setLoadData("loadInitalData")
-                const { uid } = auth.currentUser;
+                const { uid, photoURL } = auth.currentUser;
                 setUid(uid);
+                setPhotoURL(photoURL);
             } else {
                 setLoggedIn("false");
             }
@@ -203,42 +256,166 @@ function EditProfile() {
 
     if (loggedIn === "true") {
         return (
-            <Container>
-                <div className="row pt-4">
-                    <div className="col">
-                    <h1>Edit Profile For: </h1>
-                        <h3 className="pt-2" >{userData === "start" ? "Sign in to view profile" : userData.displayName}</h3>
+            <Container className="mt-5">
+                <Row className="justify-content-center pb-2">
+                    <Col xs={1} md={1}></Col>
+                    <Col className="text-right" xs={3} md={4}>
+                        <Image className="mt-2" src={userData.photoURL} alt="" width={125} height={125} roundedCircle/><br />
+                        <Form onSubmit={onSubmitPhoto} className="pt-2">
+                            <Button size="sm" variant="outline-dark" type="submit" className="mr-3">
+                                Sync Photo
+                            </Button>
+                        </Form>
+                    </Col>
+                    <Col className="text-left font-italic pl-4 pt-3" style={{color: '#343a40'}} xs={7} md={6}>
+                        <h1 className="mb-0 pb-0 pl-1">{userData === "start" ? "Sign in to view profile" : userData.displayName}</h1>
+                        <Form onSubmit={onChangeDisplayName}>
+                            <Form.Row>
+                            <Form.Label column="sm" sm="auto" className="text-capitalize text-md">
+                                NAME
+                            </Form.Label>
+                            <Col column="sm" sm={5} className="ml-2">
+                            <Form.Control size="sm" lg={2} type="text" value={displayName || ''} onChange={(e) => setDisplayName(e.target.value)} placeholder={userData !== "start" && userData.displayName !== undefined ? userData.displayName : ''} />
+                            </Col>
+                            <Col xs="auto">
+                            <Button size="sm" variant="outline-dark" type="submit">Update</Button>
+                            </Col>
+                            </Form.Row>
+                        </Form>
+                        <span className="my-2 text-info pl-3">{userData.email}</span><br />
+                    </Col>
+                    <Col xs={1} md={1}></Col>
+                </Row>
+
+                <div className="container-fluid col-10">
+                <div className="text-capitalize col-auto border rounded border-warning mt-2" style={{color: '#343a40'}}>
+                {alert === "true" ? <Alert variant="success">Update Successful</Alert> : <span></span>}
+                <div className="justify-content-center d-flex">
+                            <Button  id="endorseButton" variant="primary" size="sm" variant="outline-dark" className="py-0 my-2" href="/endorsements">View Endorsements</Button>
                     </div>
+                <dl className="row auto-x mb-0">
+                    <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right"><GrGithub className="mr-3 my-2" style={ICON_STYLES}/>GITHUB</dt>
+                    <dd className="col-sm-12 col-md-8 col-lg-8 font-italic pt-1" style={{textTransform: "lowercase"}}>
+                        <Form onSubmit={onChangeGitHub}>
+                            <Form.Row>
+                            <Form.Label column="sm" sm="4">
+                                https://github.com/
+                            </Form.Label>
+                            <Col column="sm" sm={4}>
+                            <Form.Control size="sm" lg={2} type="text" value={gitHub || ''} onChange={(e) => setGitHub(e.target.value)} placeholder={userData !== "start" && userData.gitHub !== undefined ? userData.gitHub : ''} />
+                            </Col>
+                            <Col xs="auto">
+                                <Button size="sm" variant="outline-dark" type="submit">Update</Button>
+                            </Col>
+                            </Form.Row>
+                        </Form>
+                    </dd>
+
+                    <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right"><GrLinkedin className="mr-3 my-2" style={ICON_STYLES}/>LINKEDIN</dt>
+                    <dd className="col-sm-12 col-md-8 col-lg-8 font-italic pt-1" style={{textTransform: "lowercase"}}>
+                        <Form onSubmit={onChangeLinkedIn}>
+                            <Form.Row>
+                            <Form.Label column="sm" sm="4">
+                                https://www.linkedin.com/in/
+                            </Form.Label>
+                            <Col column="sm" sm={4}>
+                            <Form.Control size="sm" lg={2} type="text" value={linkedIn || ''} onChange={(e) => setLinkedIn(e.target.value)} placeholder={userData !== "start" && userData.linkedIn !== undefined ? userData.linkedIn : ''} />
+                            </Col>
+                            <Col xs="auto">
+                                <Button size="sm" variant="outline-dark" type="submit">Update</Button>
+                            </Col>
+                            </Form.Row>
+                        </Form>
+                    </dd>
+
+                    <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right"><GrTwitter className="mr-3 my-2" style={ICON_STYLES}/>TWITTER</dt>
+                    <dd className="col-sm-12 col-md-8 col-lg-8 font-italic pt-1" style={{textTransform: "lowercase"}}>
+                        <Form onSubmit={onChangeTwitter}>
+                            <Form.Row>
+                            <Form.Label column="sm" sm="4">
+                                https://twitter.com/
+                            </Form.Label>
+                            <Col column="sm" sm={4}>
+                            <Form.Control size="sm" lg={2} type="text" value={twitter || ''} onChange={(e) => setTwitter(e.target.value)} placeholder={userData !== "start" && userData.twitter !== undefined ? userData.twitter : ''} />
+                            </Col>
+                            <Col xs="auto">
+                                <Button size="sm" variant="outline-dark" type="submit">Update</Button>
+                            </Col>
+                            </Form.Row>
+                        </Form>
+                    </dd>
+
+                    <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right pt-1">ORGANIZATION</dt>
+                    <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">
+                        <Form onSubmit={onChangeOrganization}>
+                        <Form.Row>
+                        <Form.Label column="sm" sm="4">
+                                {userData.organization}
+                            </Form.Label>
+                        <Col column="sm" sm={4}>
+                            <Form.Control size="sm" lg={2} type="text" value={organization || ''} onChange={(e) => setOrganization(e.target.value)} placeholder={userData !== "start" && userData.organization !== undefined ? userData.organization : ''} />
+                        </Col>
+                        <Col xs="auto">
+                            <Button size="sm" variant="outline-dark" type="submit">Update</Button>
+                        </Col>
+                        </Form.Row>
+                        </Form>
+                    </dd>
+        
+                    <dt className="col-sm-12 col-md-4 col-lg-4 text-md-right pt-1">INDUSTRY</dt>
+                    <dd className="col-sm-12 col-md-8 col-lg-8 font-italic">
+                        <Form onSubmit={onChangeIndustry}>
+                        <Form.Row>
+                        <Form.Label column="sm" sm="4">
+                                {userData.industry}
+                            </Form.Label>
+                        <Col column="sm" sm={4}>
+                            <Form.Control size="sm" value={industry} as="select" onChange={handleIndustryChange}>
+                                {criteria !== "start" && criteria.industries !== undefined && criteria.industries.map(industry => 
+                                <option value={industry} key={industry}>{industry}</option>)}
+                            </Form.Control> 
+                        </Col>
+                        <Col xs="auto">
+                            <Button size="sm" variant="outline-dark" type="submit">Update</Button>
+                        </Col>
+                        </Form.Row>
+                        </Form>
+                    </dd>
+                </dl>
                 </div>
-                <Button href="/endorsements">View Endorsements</Button>
-            <Tabs className="pt-4" defaultActiveKey="skills" id="uncontrolled-tab-example">
-            <Tab eventKey="skills" title="Skills">
+                </div>
+                 
+                <div className="container-fluid col-10">
+                <div className="text-capitalize col-auto border rounded border-warning mt-2" style={{color: '#343a40'}}>
+                <Tabs className="pt-4" defaultActiveKey="skills" id="uncontrolled-tab-example">
+            <Tab eventKey="skills" title="SKILLS">
                             <div>
                                 <ul className="list-group list-group-flush pt-3">
-                                    <h5 className="pr-4 text-end" style={{textAlign: 'end'}}>Delete</h5>
+                                    <h6 className="pr-4" style={{textAlign: 'end', fontWeight: 'bold'}}>DELETE</h6>
                                     {userData !== "start" && userData.skills !== undefined && userData.skills.map(skill =>
-                                         <li className="list-group-item" key={skill}>{skill}<button onClick={() => deleteSkill(skill)} className="float-right btn"><FaTrashAlt size={25} style={{color: 'red'}}/></button></li>)}
+                                         <li className="list-group-item font-italic" key={skill}>{skill}<button onClick={() => deleteSkill(skill)} className="float-right btn"><FaTrashAlt size={22} style={{color: 'red'}}/></button></li>)}
                                 </ul>
                             </div>
                        
                             <div className="pt-3 pl-3">
                                 <form onSubmit={onAddUserSkill}>
+                                <Form.Label className="pr-2" style={{fontWeight: 'bold'}}>ADD SKILL</Form.Label>
                                     <input type="text" value={skill || ''} onChange={(e) => setSkill(e.target.value)} placeholder="Add Skill" />
-                                    <button type="submit" className="btn ml-3 mb-1" disabled={!skill}><BsPlusCircleFill size={40} style={{color: 'green'}} /></button>
+                                    <button type="submit" className="btn ml-3 mb-1" disabled={!skill}><BsPlusCircleFill size={35} style={{color: 'green'}} /></button>
                                 </form> 
                             </div>
             </Tab>
-            <Tab eventKey="courses" title="Courses">
+            <Tab eventKey="courses" title="COURSES">
                              <div>
                                 <ul className="list-group list-group-flush pt-3">
-                                <h5 className="pr-4" style={{textAlign: 'end'}}>Delete</h5>
+                                <h6 className="pr-4" style={{textAlign: 'end', fontWeight: 'bold'}}>DELETE</h6>
                                     {userData !== "start" && userData.courses !== undefined && userData.courses.map(course => 
-                                    <li className="list-group-item" key={course}>{course}<button onClick={() => deleteCourse(course)}className="float-right btn"><FaTrashAlt size={25} style={{color: 'red'}}/></button></li>)}
+                                    <li className="list-group-item font-italic" key={course}>{course}<button onClick={() => deleteCourse(course)}className="float-right btn"><FaTrashAlt size={22} style={{color: 'red'}}/></button></li>)}
                                 </ul>
                             </div>
                 <Form inline onSubmit={onSubmitCourseTwo}>
                     <Form.Group controlId="exampleForm.ControlSelect1" >
-                    <Form.Label className="pr-2">Add Course: </Form.Label>
+                    <Form.Label className="pr-2" style={{fontWeight: 'bold'}}>ADD COURSE </Form.Label>
                         <Form.Control className="mr-sm-2" value={courseSubject} as="select" onChange={handleCourseSubjectChange}>
                             <option>Pick A Course</option>
                         {criteria !== "start" && criteria.courses !== undefined && criteria.courses.map(courseSubject => 
@@ -246,89 +423,19 @@ function EditProfile() {
                         </Form.Control> 
                         <Form.Control placeholder="" type="text" onChange={handleCourseNumberChange}></Form.Control> 
                     </Form.Group>
-                    <button type="submit" className="btn ml-3 mb-1" disabled={!courseNumber || !courseSubject}><BsPlusCircleFill size={40} style={{color: 'green'}} /></button>
+                    <button type="submit" className="btn ml-3 mb-1" disabled={!courseNumber || !courseSubject}><BsPlusCircleFill size={35} style={{color: 'green'}} /></button>
                 </Form>
             </Tab>
-            <Tab eventKey="industry" title="Industry">
-                <h4>Current Industry: {userData !== "start" && userData.industry !== undefined ? userData.industry : ''}</h4>
-            <Form onSubmit={onChangeIndustry}>
-                <Form.Group controlId="exampleForm.ControlSelect1">
-                    <Form.Label>Update Industry</Form.Label>
-                    <Form.Control value={industry} as="select" onChange={handleIndustryChange}>
-                    {criteria !== "start" && criteria.industries !== undefined && criteria.industries.map(industry => 
-                                    <option value={industry} key={industry}>{industry}</option>)}
-                    </Form.Control> 
-                </Form.Group>
-                <Button variant="primary" type="submit">Submit</Button>
-            </Form>
-            </Tab>
-            <Tab eventKey="displayName" title="Display Name">
-                <h4>Current Display Name: {userData !== "start" && userData.displayName !== undefined ? userData.displayName : ''}</h4>
-            <Form onSubmit={onChangeDisplayName}>
-                <Form.Group as={Row} controlId="formPlaintextPassword">
-                    <Form.Label column sm="2">
-                        Update Display Name
-                    </Form.Label>
-                    <Col sm="10">
-                    <Form.Control type="text" value={displayName || ''} onChange={(e) => setDisplayName(e.target.value)} placeholder={userData !== "start" && userData.displayName !== undefined ? userData.displayName : ''} />
-                    </Col>
-                </Form.Group>
-                <Button variant="primary" type="submit">Submit</Button>
-            </Form>
-            </Tab>
-            <Tab eventKey="profiles" title="Profiles">
-                <h4>Current GitHub: {userData !== "start" && userData.linkedIn !== undefined ? userData.linkedIn : ''}</h4>
-                <h4>Current Twitter: {userData !== "start" && userData.gitHub !== undefined ? userData.gitHub : ''}</h4>
-                <h4>Current LinkedIn: {userData !== "start" && userData.twitter !== undefined ? userData.twitter : ''}</h4>
-            <Form onSubmit={onChangeLinkedIn}>
-                <Form.Group as={Row} controlId="formPlaintextPassword">
-                    <Form.Label column sm="2">
-                        Update LinkedIn
-                    </Form.Label>
-                    <Col sm="10">
-                    <Form.Control type="text" value={linkedIn || ''} onChange={(e) => setLinkedIn(e.target.value)} placeholder={userData !== "start" && userData.linkedIn !== undefined ? userData.linkedIn : ''} />
-                    </Col>
-                </Form.Group>
-                <Button variant="primary" type="submit">Submit</Button>
-            </Form>
-            <Form onSubmit={onChangeGitHub}>
-                <Form.Group as={Row} controlId="formPlaintextPassword">
-                    <Form.Label column sm="2">
-                        Update GitHub
-                    </Form.Label>
-                    <Col sm="10">
-                    <Form.Control type="text" value={gitHub || ''} onChange={(e) => setGitHub(e.target.value)} placeholder={userData !== "start" && userData.gitHub !== undefined ? userData.gitHub : ''} />
-                    </Col>
-                </Form.Group>
-                <Button variant="primary" type="submit">Submit</Button>
-            </Form>
-            <Form onSubmit={onChangeTwitter}>
-                <Form.Group as={Row} controlId="formPlaintextPassword">
-                    <Form.Label column sm="2">
-                        Update Display Name
-                    </Form.Label>
-                    <Col sm="10">
-                    <Form.Control type="text" value={twitter || ''} onChange={(e) => setTwitter(e.target.value)} placeholder={userData !== "start" && userData.twitter !== undefined ? userData.twitter : ''} />
-                    </Col>
-                </Form.Group>
-                <Button variant="primary" type="submit">Submit</Button>
-            </Form>
-            </Tab>
-            <Tab eventKey="Organization" title="Organization">
-                <h4>Current Organization: {userData !== "start" && userData.organization !== undefined ? userData.organization : ''}</h4>
-            <Form onSubmit={onChangeOrganization}>
-                <Form.Group as={Row} controlId="formPlaintextPassword">
-                    <Form.Label column sm="2">
-                        Update Organization
-                    </Form.Label>
-                    <Col sm="10">
-                    <Form.Control type="text" value={organization || ''} onChange={(e) => setOrganization(e.target.value)} placeholder={userData !== "start" && userData.organization !== undefined ? userData.organization : ''} />
-                    </Col>
-                </Form.Group>
-                <Button variant="primary" type="submit">Submit</Button>
-            </Form>
-            </Tab>
             </Tabs>
+            
+                </div>
+                </div>
+                <div className="text-center">
+                    <a href={"/search"}>
+                        <Button variant="primary" size="sm" variant="outline-dark" className="py-0 my-2">Search Profiles</Button>
+                    </a>
+                </div> 
+            
             </Container>
         )
     } else if (loggedIn === "start"){
