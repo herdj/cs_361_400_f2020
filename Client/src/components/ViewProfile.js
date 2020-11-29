@@ -60,14 +60,14 @@ function SkillsAward(category) {
 
 // Display Courses placeholder text when no skills are listed in user profile.
 function VerifyCourses(category) {
-    if (category.length == 0) {
+    if (category.length === 0) {
         noCourses = " No courses listed |"
     }
 }
 
 // Display Skills placeholder text when no skills are listed in user profile.
 function VerifySkills(category) {
-    if (category.length == 0) {
+    if (category.length === 0) {
         noSkills = " No skills listed |"
     }
 }
@@ -75,9 +75,9 @@ function VerifySkills(category) {
 // Display Organization placeholder text when no organization is listed in user profile.
 function VerifyOrganization(category) {
     // Test if database contains 'organization' criteria.
-    if (typeof(category) == 'undefined') {
+    if (typeof(category) === 'undefined') {
         noOrganization = " No organization listed"
-    } else if (category == "") {    
+    } else if (category === "") {    
         noOrganization = " No organization listed"
     }
 }
@@ -85,16 +85,16 @@ function VerifyOrganization(category) {
 // Display Industry placeholder text when no industry is listed in user profile.
 function VerifyIndustry(category) {
     // Test if database contains 'industry' criteria.
-    if (typeof(category) == 'undefined') {
+    if (typeof(category) === 'undefined') {
         noIndustry = " No industry listed"
-    } else if (category == "") {
+    } else if (category === "") {
         noIndustry = " No industry listed"
     }
 }
 
 //Toggles the 'Endorse Expert' button off;
 //Conditions for Off; User not signed in || User viewing own profile.
-function endroseButtonOff() {
+function endorseButtonOff() {
     document.getElementById('endorseButton').style.display = 'none';
 }
 
@@ -168,12 +168,12 @@ function ProfileData(props) {
                 var signedInUid = auth.currentUser['uid'];
                 if (signedInUid === uid) {
                     //Signed In User is viewing own profile; Do not display Endorse Button
-                    endroseButtonOff();
+                    endorseButtonOff();
                 };
             } else {
                 setLoggedIn("false");
                 //No User is signed in; Do no display Endorse Button
-                endroseButtonOff();
+                endorseButtonOff();
             }
         })
     }
