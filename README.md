@@ -10,6 +10,7 @@ By the Sharp Crayons.
     - [Installing Git] (#installing-git)
     - [Installing Node] (#installing-node)
     - [Clone Github Repo] (#clone github repo)
+    -[Running the Project] (#Running the project)
     
 ## Installing Git
 Git: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
@@ -43,6 +44,15 @@ MacOS
 4. Commit all updates `git commit -m "enter a comment"`
 5. Push updates to GitHub `git push` You could also use something like `git push origin client`
 
+## Running the Project
+Windows OS
+1. Navigate to the folder containing the project using command a command prompt.
+2. Change your directory to the Client folder and run the command "npm run-script start"
+3. A browser should open up to the project.
+3. In a second command prompt navigate to the project again.
+4. Change your directory to "../Services/CommunicationManagement/CommWebApi".
+5. Run the command dotnet run.
+6. The CommWebApi should not be active, and the app should function as intended.
 
 Client - All client side code.\
 Services - All backend Apis and Database code.
